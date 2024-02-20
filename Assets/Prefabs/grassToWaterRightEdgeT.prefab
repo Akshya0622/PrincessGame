@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6959573596395855084}
   - component: {fileID: 8734262169538568236}
+  - component: {fileID: -1167564870985498374}
   m_Layer: 0
   m_Name: grassToWaterRightEdgeT
   m_TagString: Untagged
@@ -84,3 +85,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-1167564870985498374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571100921528471993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b73b36dcd5c2fc44b9cc963f0732573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
