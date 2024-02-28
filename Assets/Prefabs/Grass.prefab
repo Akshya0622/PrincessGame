@@ -119,8 +119,9 @@ MonoBehaviour:
   - {fileID: 724058386135749174, guid: 4a1bc8f97325c458ead8635563541109, type: 3}
   - {fileID: 724058386135749174, guid: 147b928a6d32541dfae2e2846fbfeb8d, type: 3}
   leftNeighbors:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: -1007873597700162056, guid: 8331c2a3ea63e4c2681c321757009e53, type: 3}
+  - {fileID: 724058386135749174, guid: 5941e3b574d734077a111c8b7678317d, type: 3}
+  - {fileID: 724058386135749174, guid: 68d3853a0b1ef4f4a8862497855b33a1, type: 3}
+  - {fileID: -6846011955258568160, guid: 4e941168c749a4bef88519c4e6d4a1c0, type: 3}
+  - {fileID: 8834551127641808505, guid: 714cac746e9af4fd58b8523d43db7f8b, type: 3}
+  - {fileID: -851148788013853225, guid: a84cc0f75d7d84466bc1b0de7919c0db, type: 3}
