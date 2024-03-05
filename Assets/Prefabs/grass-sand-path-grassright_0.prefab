@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3960169522505397768}
   - component: {fileID: 5711243017156228296}
+  - component: {fileID: 4934853955516245184}
   m_Layer: 0
   m_Name: grass-sand-path-grassright_0
   m_TagString: Untagged
@@ -84,3 +85,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4934853955516245184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5854436290609981523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b73b36dcd5c2fc44b9cc963f0732573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upNeighbors: []
+  downNeighbors: []
+  rightNeighbors: []
+  leftNeighbors: []

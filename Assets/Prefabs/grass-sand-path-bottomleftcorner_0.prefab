@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 929989916796893145}
   - component: {fileID: 4752522396036182040}
+  - component: {fileID: 4930171819336804557}
   m_Layer: 0
   m_Name: grass-sand-path-bottomleftcorner_0
   m_TagString: Untagged
@@ -84,3 +85,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4930171819336804557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3247361620791098675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b73b36dcd5c2fc44b9cc963f0732573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upNeighbors:
+  - {fileID: 5545029713492500880, guid: b666bf33565d8204185f39c462a69fa7, type: 3}
+  downNeighbors:
+  - {fileID: -8630166953181237881, guid: d0ab358ad79ca2245b3c68c0b37bb4ba, type: 3}
+  - {fileID: 6445361268186113291, guid: d74cb4d023da7b843af161436fcb0968, type: 3}
+  - {fileID: -3763730855884439644, guid: 3611223c8dcfa304d80bb59af2ec1777, type: 3}
+  - {fileID: -595981122373331421, guid: 971f7e6fc1e075444833d96f5c415618, type: 3}
+  rightNeighbors:
+  - {fileID: 7464748713605031363, guid: c15adea59a99a94419ddce3964cd20ce, type: 3}
+  leftNeighbors:
+  - {fileID: 5867300271908386379, guid: b3cf5d7730fd34eb6b5325b6253b79a5, type: 3}
