@@ -97,7 +97,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b73b36dcd5c2fc44b9cc963f0732573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upNeighbors: []
-  downNeighbors: []
-  rightNeighbors: []
-  leftNeighbors: []
+  upNeighbors:
+  - {fileID: 4934853955516245184}
+  - {fileID: 5859064924316042350, guid: 44aaec2e7872c1c458461dc04866bbb5, type: 3}
+  downNeighbors:
+  - {fileID: 4934853955516245184}
+  - {fileID: -1337265506381612221, guid: 7d2f2388fbeca2c41867d781b912bad0, type: 3}
+  rightNeighbors:
+  - {fileID: 5867300271908386379, guid: b3cf5d7730fd34eb6b5325b6253b79a5, type: 3}
+  - {fileID: -595981122373331421, guid: 971f7e6fc1e075444833d96f5c415618, type: 3}
+  - {fileID: -3763730855884439644, guid: 3611223c8dcfa304d80bb59af2ec1777, type: 3}
+  - {fileID: 8437535935155337813, guid: 0718c60ab8cf3cd44868d7f4dda8b96c, type: 3}
+  - {fileID: 6445361268186113291, guid: d74cb4d023da7b843af161436fcb0968, type: 3}
+  - {fileID: 4930171819336804557, guid: 53ad13e3fbe8ad545aa826778032e389, type: 3}
+  - {fileID: -2194852058801843480, guid: 0ab5b851abbcac84885123a6ba512ef4, type: 3}
+  - {fileID: 7034473073938890314, guid: e3c3879fabffa1b408d6ef7987aacbd2, type: 3}
+  - {fileID: 3285819003943045172, guid: f8c9c8a1bf27d3c4e92f7a7af63a8b07, type: 3}
+  - {fileID: -1973918532699618347, guid: 3b29671c2a0c2ba478318d8b88231aa0, type: 3}
+  - {fileID: 3285444893151614797, guid: 4f9d610fd8325bd489bc205ca1d2d512, type: 3}
+  leftNeighbors:
+  - {fileID: -2549200142565365760, guid: 40ac583e91f7ab742a3c405c717677f5, type: 3}
+  - {fileID: -9200513894068774523, guid: 6c21bd3c3e517314e99b91cf65c16dd8, type: 3}
+  - {fileID: -7821485178663026151, guid: a88d46b2b1d18f94b966e332c5d349c9, type: 3}
