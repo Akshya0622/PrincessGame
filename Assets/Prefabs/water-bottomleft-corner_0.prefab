@@ -97,7 +97,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b73b36dcd5c2fc44b9cc963f0732573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upNeighbors: []
-  downNeighbors: []
-  rightNeighbors: []
-  leftNeighbors: []
+  upNeighbors:
+  - {fileID: -6993105605220744109, guid: 55697bf07b384fb4b992e48c2c72e86f, type: 3}
+  downNeighbors:
+  - {fileID: 7034473073938890314, guid: e3c3879fabffa1b408d6ef7987aacbd2, type: 3}
+  - {fileID: 3285819003943045172, guid: f8c9c8a1bf27d3c4e92f7a7af63a8b07, type: 3}
+  rightNeighbors:
+  - {fileID: 9085309484758492023, guid: c65e138354cd96d49ad9d2f8aae8eeb6, type: 3}
+  leftNeighbors:
+  - {fileID: 7034473073938890314, guid: e3c3879fabffa1b408d6ef7987aacbd2, type: 3}
