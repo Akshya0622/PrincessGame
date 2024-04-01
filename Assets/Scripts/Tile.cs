@@ -19,11 +19,11 @@ public class Tile : MonoBehaviour
 
     public void Start()
     {
-       entropy = possibilities.Count;
+       entropy = possibilities.Count; // number of possibilities for current tile
     }
     public void addNeighbors(int direction, Tile neigh)
     {
-        MyNeighbors[direction] = neigh;
+        MyNeighbors[direction] = neigh; 
     }
     public Tile getNeighbors(int direction)
     {
@@ -47,12 +47,16 @@ public class Tile : MonoBehaviour
         for (int i = 0; i < tileWeights.Count; i++)
         {
             cumulativeWeight += weights[i];
-            if(ran <  cumulativeWeight)
+            if(ran <  cumulativeWeight && possibilities.Contains(actualTile[i]))
             {
                 possibilities = new List<Tile>();
                 possibilities.Add(actualTile[i]);
             }
         }
         entropy = 0;
+    }
+    public void constrain()
+    {
+
     }
 }
