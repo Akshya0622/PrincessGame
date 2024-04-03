@@ -12,11 +12,13 @@ public class Tile : MonoBehaviour
     public Tile[] downNeighbors;
     public Tile[] rightNeighbors;
     public Tile[] leftNeighbors;
-    public List<Tile> possibilities;
+}
+
+/* public List<Tile> possibilities;
     public Dictionary <int, Tile> MyNeighbors; // like actual placed tiles not like oh this tile could work as a neighbor
     Dictionary<Tile, double> tileWeights;
     int entropy;
-
+    bool reduced;
     public void Start()
     {
        entropy = possibilities.Count; // number of possibilities for current tile
@@ -57,6 +59,7 @@ public class Tile : MonoBehaviour
     }
     public void constrain()
     {
-
+        reduced = false;
     }
 }
+*/
