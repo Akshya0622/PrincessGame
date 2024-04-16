@@ -35,15 +35,11 @@ public class mapGenerator : MonoBehaviour
         world[startPos.x, startPos.y] = startTile;
         generateTiles(world, startPos.x, startPos.y, startTile);
     }
-    void generateTiles(Tile[,] world, int x, int y, Tile tilePrfb)
+    bool generateTiles(Tile[,] world, int x, int y, Tile tilePrfb)
     {
-        
         Debug.Log("Generating tile at: " + x + ", " + y);
-        Instantiate(tilePrfb, new Vector3(x,y, 0), Quaternion.identity);
-        if (x < 0 || x >= sizeX || y < 0 || y >= sizeY)
-        {
-            return;
-        }
+        Tile tile = Instantiate(tilePrfb, new Vector3(x, y, 0), Quaternion.identity);
+        
         List<Vector2Int> directions = new List<Vector2Int>
         {
             new Vector2Int(0, 1),
@@ -52,7 +48,7 @@ public class mapGenerator : MonoBehaviour
             new Vector2Int(1,0)
         };
 
-        
+
         for (int i = 0; i < 4; i++)
         {
             int randomIndex = Random.Range(i, 4);
@@ -79,8 +75,11 @@ public class mapGenerator : MonoBehaviour
                     {
                         Debug.Log("Placing tile at: " + newX + ", " + newY);
                         world[newX, newY] = neighbor;
-                        generateTiles(world, newX, newY, neighbor);
-                        break;
+                        bool result = generateTiles(world, newX, newY, neighbor);
+                        //f (!result)
+                        //{//
+                         //   Destroy(tile.gameObject);
+                        //}
                     }
                     else
                     {
@@ -89,6 +88,11 @@ public class mapGenerator : MonoBehaviour
                 }
             }
         }
+
+        // tile found no possible neighbors
+        
+        return false;
+    }
 
         bool canBePlaced(Tile[,] world, int x, int y, Tile tile)
         {
@@ -218,5 +222,5 @@ public class mapGenerator : MonoBehaviour
 
 
 
-    }
+    
 }

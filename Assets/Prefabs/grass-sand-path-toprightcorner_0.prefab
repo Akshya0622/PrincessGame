@@ -125,3 +125,4 @@ MonoBehaviour:
   - {fileID: -1973918532699618347, guid: 3b29671c2a0c2ba478318d8b88231aa0, type: 3}
   leftNeighbors:
   - {fileID: -6079274656476141582, guid: b503927c69145a5449d4b2214e8bc2ee, type: 3}
+  - {fileID: -2194852058801843480, guid: 0ab5b851abbcac84885123a6ba512ef4, type: 3}

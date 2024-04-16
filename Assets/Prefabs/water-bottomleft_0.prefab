@@ -100,6 +100,7 @@ MonoBehaviour:
   upNeighbors:
   - {fileID: -1973918532699618347, guid: 3b29671c2a0c2ba478318d8b88231aa0, type: 3}
   - {fileID: 3285819003943045172, guid: f8c9c8a1bf27d3c4e92f7a7af63a8b07, type: 3}
+  - {fileID: 8659245721398632438, guid: c37535527b49e014cadd5a4c1a38a463, type: 3}
   downNeighbors:
   - {fileID: 3285444893151614797, guid: 4f9d610fd8325bd489bc205ca1d2d512, type: 3}
   - {fileID: -6079274656476141582, guid: b503927c69145a5449d4b2214e8bc2ee, type: 3}

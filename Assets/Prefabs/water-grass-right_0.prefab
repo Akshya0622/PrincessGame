@@ -116,3 +116,4 @@ MonoBehaviour:
   - {fileID: 5867300271908386379, guid: b3cf5d7730fd34eb6b5325b6253b79a5, type: 3}
   leftNeighbors:
   - {fileID: 3285819003943045172, guid: f8c9c8a1bf27d3c4e92f7a7af63a8b07, type: 3}
+  - {fileID: -8471571260215440782, guid: 33361f5249ac445d3bddb227f648129d, type: 3}
