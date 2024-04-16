@@ -101,27 +101,26 @@ public class mapGenerator : MonoBehaviour
             
 
             bool canConnectUp = canConnectToNeigh(world, x, y + 1, tile.upNeighbors);
-            bool canConnectDown = canConnectToNeigh(world, x, y - 1, tile.downNeighbors);
-            bool canConnectLeft = canConnectToNeigh(world, x-1, y, tile.leftNeighbors);
-            bool canConnectRight = canConnectToNeigh(world, x+1, y, tile.rightNeighbors);
-
             if (canConnectUp == false)
             {
                 Debug.Log("tried but couldnt 1");
                 return false;
 
             }
-            else if(canConnectDown == false)
+            bool canConnectDown = canConnectToNeigh(world, x, y - 1, tile.downNeighbors);
+            if (canConnectDown == false)
             {
                 Debug.Log("tried but couldnt 2");
                 return false;
             }
-            else if(canConnectLeft == false)
+            bool canConnectLeft = canConnectToNeigh(world, x-1, y, tile.leftNeighbors);
+            if (canConnectLeft == false)
             {
                 Debug.Log("tried but couldnt 3");
                 return false;
             }
-            else if(canConnectRight == false)
+            bool canConnectRight = canConnectToNeigh(world, x + 1, y, tile.rightNeighbors);
+            if(canConnectRight == false)
             {
                 Debug.Log("tried but couldnt 4");
                 return false;
@@ -151,8 +150,9 @@ public class mapGenerator : MonoBehaviour
                         
                     }
                 }
+                return false;
             }
-            return false;
+            return true;
         }
 
         Tile[]getPossibleNeighbors(Tile [,] world, int x, int y, Vector2Int direction)
@@ -164,22 +164,22 @@ public class mapGenerator : MonoBehaviour
                
 
             }
-            Tile tscript = t.GetComponent<Tile>();
+           
             if(direction == new Vector2Int(0,1))
             {
-                return tscript.upNeighbors;
+                return t.upNeighbors;
             }
            else if (direction == new Vector2Int(0, -1))
             {
-                return tscript.downNeighbors;
+                return t.downNeighbors;
             }
             else if (direction == new Vector2Int(-1, 0))
             {
-                return tscript.leftNeighbors;
+                return t.leftNeighbors;
             }
             else if (direction == new Vector2Int(1, 0))
             {
-                return tscript.rightNeighbors;
+                return t.rightNeighbors;
             }
             else 
             {

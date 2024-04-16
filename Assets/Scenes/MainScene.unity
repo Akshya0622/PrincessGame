@@ -241,8 +241,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18d20d36ec9a11041a5545c2e750a970, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dimensions: 50
-  tileObjects:
+  sizeX: 10
+  sizeY: 10
+  tilePrefabs:
   - {fileID: 3285444893151614797, guid: 4f9d610fd8325bd489bc205ca1d2d512, type: 3}
   - {fileID: 8263158585795961983, guid: f906a80a6cb7447c4a76c770d2e391f1, type: 3}
   - {fileID: 5867300271908386379, guid: b3cf5d7730fd34eb6b5325b6253b79a5, type: 3}
@@ -275,9 +276,9 @@ MonoBehaviour:
   - {fileID: 8910353280305802061, guid: 5dc0be7883da1ba41977bee8322372f0, type: 3}
   - {fileID: -6993105605220744109, guid: 55697bf07b384fb4b992e48c2c72e86f, type: 3}
   - {fileID: -1973918532699618347, guid: 3b29671c2a0c2ba478318d8b88231aa0, type: 3}
+  - {fileID: -4798891368239623830, guid: 2a7c8c2a1b38c164680242b7ac5e7e3e, type: 3}
   - {fileID: 2250729186023345667, guid: 1d5ab9780cb4cd04098f1843a8c09e31, type: 3}
-  grid: []
-  cellObject: {fileID: 4264090416793519053, guid: 34da3974f35f7e748bf6c3c7d744d9fd, type: 3}
+  weightValues: 
 --- !u!4 &2124085507
 Transform:
   m_ObjectHideFlags: 0
