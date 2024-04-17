@@ -36,10 +36,10 @@ public class mapGenerator : MonoBehaviour
         Tile tile = Instantiate(startTile, new Vector3(startPos.x, startPos.y, 0), Quaternion.identity);
         generateTiles(world, startPos.x, startPos.y, startTile);
     }
-    bool generateTiles(Tile[,] world, int x, int y, Tile tilePrfb)
+   void generateTiles(Tile[,] world, int x, int y, Tile tilePrfb)
     {
         Debug.Log("Generating tile at: " + x + ", " + y);
-        //Tile tile = Instantiate(tilePrfb, new Vector3(x, y, 0), Quaternion.identity);
+        Tile tile = Instantiate(tilePrfb, new Vector3(x, y, 0), Quaternion.identity);
         
         List<Vector2Int> directions = new List<Vector2Int>
         {
@@ -58,7 +58,7 @@ public class mapGenerator : MonoBehaviour
             directions[randomIndex] = temp;
         }
 
-        bool result = false;
+        
 
         foreach (Vector2Int direction in directions)
         {
@@ -67,7 +67,7 @@ public class mapGenerator : MonoBehaviour
 
             if (newX >= 0 && newX < sizeX && newY >= 0 && newY < sizeY && world[newX, newY] == null)
             {
-                result = true;
+               
                 Tile[] possibleNeighbors = getPossibleNeighbors(world, x, y, direction); // access from tile
                 Debug.Log("Number of possible neighbors: " + possibleNeighbors.Length + "direction " + direction);
                 possibleNeighbors = weightedSelect(possibleNeighbors); // u need to makesomething to remake the array with weights
@@ -78,12 +78,12 @@ public class mapGenerator : MonoBehaviour
                     if (canBePlaced(world, newX, newY, neighbor))
                     {
                         Debug.Log("Placing tile at: " + newX + ", " + newY);
-                        Tile tile = Instantiate(neighbor, new Vector3(newX, newY, 0), Quaternion.identity);
+                       
                         world[newX, newY] = tile;
                         
-                        result = generateTiles(world, newX, newY, tile);
+                        generateTiles(world, newX, newY, neighbor);
 
-                        if (!result) Destroy(tile.gameObject);
+                      
                      
                     }
                     else
@@ -95,10 +95,7 @@ public class mapGenerator : MonoBehaviour
             }
         }
 
-        if (result) return false;
-        else return true;
-
-
+       
         // tile found no possible neighbors
         
         
