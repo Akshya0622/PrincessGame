@@ -111,6 +111,9 @@ MonoBehaviour:
   - {fileID: 3285444893151614797, guid: 4f9d610fd8325bd489bc205ca1d2d512, type: 3}
   downNeighbors:
   - {fileID: -2549200142565365760, guid: 40ac583e91f7ab742a3c405c717677f5, type: 3}
+  - {fileID: -2351192317439552773, guid: e22c3ee3a3e1e9e4da483c2a3aca9ae2, type: 3}
+  - {fileID: -7821485178663026151, guid: a88d46b2b1d18f94b966e332c5d349c9, type: 3}
+  - {fileID: 7464748713605031363, guid: c15adea59a99a94419ddce3964cd20ce, type: 3}
   rightNeighbors:
   - {fileID: 5859064924316042350, guid: 44aaec2e7872c1c458461dc04866bbb5, type: 3}
   - {fileID: -6079274656476141582}

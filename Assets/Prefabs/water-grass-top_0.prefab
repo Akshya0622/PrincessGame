@@ -115,5 +115,7 @@ MonoBehaviour:
   - {fileID: -8471571260215440782, guid: 33361f5249ac445d3bddb227f648129d, type: 3}
   rightNeighbors:
   - {fileID: 2250729186023345667, guid: 1d5ab9780cb4cd04098f1843a8c09e31, type: 3}
+  - {fileID: 8910353280305802061}
   leftNeighbors:
   - {fileID: -1973918532699618347, guid: 3b29671c2a0c2ba478318d8b88231aa0, type: 3}
+  - {fileID: 8910353280305802061}

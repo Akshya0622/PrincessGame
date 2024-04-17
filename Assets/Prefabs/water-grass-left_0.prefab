@@ -99,6 +99,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upNeighbors:
   - {fileID: -1973918532699618347, guid: 3b29671c2a0c2ba478318d8b88231aa0, type: 3}
+  - {fileID: 3285819003943045172}
+  - {fileID: 8659245721398632438, guid: c37535527b49e014cadd5a4c1a38a463, type: 3}
   downNeighbors:
   - {fileID: 7034473073938890314, guid: e3c3879fabffa1b408d6ef7987aacbd2, type: 3}
   rightNeighbors:
