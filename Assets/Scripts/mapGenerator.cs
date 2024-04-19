@@ -10,15 +10,19 @@ public class mapGenerator : MonoBehaviour
     public int sizeX = 10;
     public int sizeY = 10;
     public Tile[] tilePrefabs;
-    Dictionary<Tile, int> tileWeightss;
+    Dictionary<Tile, int> tileWeightss; //weights of each tile so we can have certain tiles being placed more often
     public int[] weightValues;
+    //Stack<Vector2Int> backtrackStack = new Stack<Vector2Int>();
+    Tile[,] world; 
+
     public void Start()
     {
         tileWeightss = populateTileWeights();
         makeGrid();
+        drawMap();
 
     }
-    Dictionary<Tile,int> populateTileWeights()
+    Dictionary<Tile,int> populateTileWeights() // create a dictionary from the list of weights and tile prefabs
     {
         Dictionary<Tile, int> tileWeights = new Dictionary<Tile, int>();
         for (int i = 0; i< tilePrefabs.Length; i++)
@@ -29,17 +33,17 @@ public class mapGenerator : MonoBehaviour
     }
     public void makeGrid()
     {
-        Tile[,] world = new Tile[sizeX, sizeY];
-        Vector2Int startPos = new Vector2Int(sizeX / 2, sizeY / 2);
+        world = new Tile[sizeX, sizeY]; // make world 2d array
+        Vector2Int startPos = new Vector2Int(sizeX / 2, sizeY / 2); // start pos in the middle
         Tile startTile = tilePrefabs[Random.Range(0, tilePrefabs.Length)];
-        world[startPos.x, startPos.y] = startTile;
-        Tile tile = Instantiate(startTile, new Vector3(startPos.x, startPos.y, 0), Quaternion.identity);
+        world[startPos.x, startPos.y] = startTile; // random start tile placed
         generateTiles(world, startPos.x, startPos.y, startTile);
     }
+    
    void generateTiles(Tile[,] world, int x, int y, Tile tilePrfb)
     {
         Debug.Log("Generating tile at: " + x + ", " + y);
-        Tile tile = Instantiate(tilePrfb, new Vector3(x, y, 0), Quaternion.identity);
+        
         
         List<Vector2Int> directions = new List<Vector2Int>
         {
@@ -50,7 +54,7 @@ public class mapGenerator : MonoBehaviour
         };
 
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++) // shuffling list of directions
         {
             int randomIndex = Random.Range(i, 4);
             Vector2Int temp = directions[i];
@@ -58,9 +62,10 @@ public class mapGenerator : MonoBehaviour
             directions[randomIndex] = temp;
         }
 
-        
 
-        foreach (Vector2Int direction in directions)
+        bool placed = false;
+        int count = 0;
+        foreach (Vector2Int direction in directions) // take the current tile and get the random direction, then check if any of the tiles that are connectable to the current tile are valid options to be placed into the map. If none of the tiles in one direction work, foreach(direction in directions) will select next direction...
         {
             int newX = x + direction.x;
             int newY = y + direction.y;
@@ -68,37 +73,66 @@ public class mapGenerator : MonoBehaviour
             if (newX >= 0 && newX < sizeX && newY >= 0 && newY < sizeY && world[newX, newY] == null)
             {
                
-                Tile[] possibleNeighbors = getPossibleNeighbors(world, x, y, direction); // access from tile
+                Tile[] possibleNeighbors = getPossibleNeighbors(world, x, y, direction); // access from tile script
                 Debug.Log("Number of possible neighbors: " + possibleNeighbors.Length + "direction " + direction);
-                possibleNeighbors = weightedSelect(possibleNeighbors); // u need to makesomething to remake the array with weights
+                possibleNeighbors = weightedSelect(possibleNeighbors); // remake neighbors array with weights
 
-                foreach (Tile neighbor in possibleNeighbors)
+                foreach (Tile neighbor in possibleNeighbors) // checking neighbors in selected direction
                 {
                     Debug.Log("Checking placement for neighbor: " + neighbor.name);
                     if (canBePlaced(world, newX, newY, neighbor))
                     {
                         Debug.Log("Placing tile at: " + newX + ", " + newY);
-                       
-                        world[newX, newY] = tile;
-                        
-                        generateTiles(world, newX, newY, neighbor);
+                        placed = true;
+                        world[newX, newY] = neighbor;
+                     
+                        generateTiles(world, newX, newY, neighbor); 
+                        break;
 
                       
                      
                     }
                     else
                     {
-                        Debug.Log("cant be placed loking thru neighbors rn");
+                        Debug.Log("cant be placed looking through neighbors");
                     }
+                }
+                if (placed) // If a tile is successfully placed, break out of the loop and continue with the next position.
+                {
+                    break;
                 }
 
             }
+            if(placed == false)
+            {
+                count++;
+                Debug.Log("none worked in " + direction);
+            }
+           
+
         }
+        if(count == 4) // if we couldnt place a tile because there was no option in any of the 4 directions
+        {
+            Debug.Log("used to be " + world[x, y]);
+            world[x, y] = null; // then make the current location null and have the previous tile check a different direction to place a tile in 
+            Debug.Log("made null");
+        }
+      
 
        
         // tile found no possible neighbors
         
         
+    }
+    void drawMap()
+    {
+        for(int i = 0; i < sizeY; i++)
+        {
+            for( int j = 0; j < sizeX; j++)
+            {
+                Instantiate(world[i, j].gameObject, new Vector3(i, j, 0), Quaternion.identity);
+            }
+        }
     }
 
         bool canBePlaced(Tile[,] world, int x, int y, Tile tile)
@@ -156,7 +190,6 @@ public class mapGenerator : MonoBehaviour
                 {
                     if (world[x,y] == null ||  world[x,y] == neighborPrefab)
                     {
-                        Debug.Log("yes");
                         return true;
                         
                     }
