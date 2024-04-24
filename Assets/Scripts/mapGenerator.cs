@@ -13,8 +13,9 @@ public class mapGenerator : MonoBehaviour
     Dictionary<Tile, int> tileWeightss; //weights of each tile so we can have certain tiles being placed more often
     public int[] weightValues;
     List<Tile> placedTiles = new List<Tile>();
-    Tile[,] world; 
-
+    Tile[,] world;
+    List<Vector2Int> prevLocation = new List<Vector2Int>();
+    bool back;
     public void Start()
     {
         tileWeightss = populateTileWeights();
@@ -39,6 +40,7 @@ public class mapGenerator : MonoBehaviour
         world[startPos.x, startPos.y] = startTile; // random start tile placed
         placedTiles.Add(startTile);
         generateTiles(world, startPos.x, startPos.y, startTile);
+        
     }
     
    void generateTiles(Tile[,] world, int x, int y, Tile tilePrfb)
@@ -68,6 +70,7 @@ public class mapGenerator : MonoBehaviour
         
         foreach (Vector2Int direction in directions) // take the current tile and get the random direction, then check if any of the tiles that are connectable to the current tile are valid options to be placed into the map. If none of the tiles in one direction work, foreach(direction in directions) will select next direction...
         {
+           
             int newX = x + direction.x;
             int newY = y + direction.y;
 
@@ -86,6 +89,7 @@ public class mapGenerator : MonoBehaviour
                         placed = true;
                         world[newX, newY] = neighbor;
                         placedTiles.Add(neighbor);
+                        prevLocation.Add(new Vector2Int(newX,newY));
 
                         // Check if map is fully filled
                         if (placedTiles.Count == sizeX * sizeY)
@@ -95,7 +99,7 @@ public class mapGenerator : MonoBehaviour
                         }
 
                         generateTiles(world, newX, newY, neighbor);
-                        break;
+                        
                     }
 
 
@@ -105,6 +109,13 @@ public class mapGenerator : MonoBehaviour
             }
             
 
+        }
+        if(placed == false)
+        {
+            world[prevLocation[prevLocation.Count - 1].x, prevLocation[prevLocation.Count - 1].y] = null;
+            prevLocation.RemoveAt(prevLocation.Count-1);
+            placedTiles.RemoveAt(placedTiles.Count - 1);
+            return;
         }
        
         
