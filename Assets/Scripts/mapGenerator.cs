@@ -7,12 +7,12 @@ using Random = UnityEngine.Random;
 
 public class mapGenerator : MonoBehaviour
 {
-    public int sizeX = 10;
-    public int sizeY = 10;
+    public int sizeX;
+    public int sizeY;
     public Tile[] tilePrefabs;
     Dictionary<Tile, int> tileWeightss; //weights of each tile so we can have certain tiles being placed more often
     public int[] weightValues;
-    //Stack<Vector2Int> backtrackStack = new Stack<Vector2Int>();
+    List<Tile> placedTiles = new List<Tile>();
     Tile[,] world; 
 
     public void Start()
@@ -37,6 +37,7 @@ public class mapGenerator : MonoBehaviour
         Vector2Int startPos = new Vector2Int(sizeX / 2, sizeY / 2); // start pos in the middle
         Tile startTile = tilePrefabs[Random.Range(0, tilePrefabs.Length)];
         world[startPos.x, startPos.y] = startTile; // random start tile placed
+        placedTiles.Add(startTile);
         generateTiles(world, startPos.x, startPos.y, startTile);
     }
     
@@ -64,7 +65,7 @@ public class mapGenerator : MonoBehaviour
 
 
         bool placed = false;
-        int count = 0;
+        
         foreach (Vector2Int direction in directions) // take the current tile and get the random direction, then check if any of the tiles that are connectable to the current tile are valid options to be placed into the map. If none of the tiles in one direction work, foreach(direction in directions) will select next direction...
         {
             int newX = x + direction.x;
@@ -82,42 +83,31 @@ public class mapGenerator : MonoBehaviour
                     Debug.Log("Checking placement for neighbor: " + neighbor.name);
                     if (canBePlaced(world, newX, newY, neighbor))
                     {
-                        Debug.Log("Placing tile at: " + newX + ", " + newY);
                         placed = true;
                         world[newX, newY] = neighbor;
-                     
-                        generateTiles(world, newX, newY, neighbor); 
+                        placedTiles.Add(neighbor);
+
+                        // Check if map is fully filled
+                        if (placedTiles.Count == sizeX * sizeY)
+                        {
+                            Debug.Log("full map done");
+                            return;
+                        }
+
+                        generateTiles(world, newX, newY, neighbor);
                         break;
+                    }
 
-                      
-                     
-                    }
-                    else
-                    {
-                        Debug.Log("cant be placed looking through neighbors");
-                    }
+
                 }
-                if (placed) // If a tile is successfully placed, break out of the loop and continue with the next position.
-                {
-                    break;
-                }
+               
 
             }
-            if(placed == false)
-            {
-                count++;
-                Debug.Log("none worked in " + direction);
-            }
-           
+            
 
         }
-        if(count == 4) // if we couldnt place a tile because there was no option in any of the 4 directions
-        {
-            Debug.Log("used to be " + world[x, y]);
-            world[x, y] = null; // then make the current location null and have the previous tile check a different direction to place a tile in 
-            Debug.Log("made null");
-        }
-      
+       
+        
 
        
         // tile found no possible neighbors
@@ -133,6 +123,7 @@ public class mapGenerator : MonoBehaviour
                 Instantiate(world[i, j].gameObject, new Vector3(i, j, 0), Quaternion.identity);
             }
         }
+        Debug.Log("placed tiles: "+placedTiles.Count);
     }
 
         bool canBePlaced(Tile[,] world, int x, int y, Tile tile)
