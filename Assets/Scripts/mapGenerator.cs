@@ -43,7 +43,7 @@ public class mapGenerator : MonoBehaviour
         
     }
     
-   void generateTiles(Tile[,] world, int x, int y, Tile tilePrfb)
+   bool generateTiles(Tile[,] world, int x, int y, Tile tilePrfb)
     {
         Debug.Log("Generating tile at: " + x + ", " + y);
         
@@ -95,11 +95,20 @@ public class mapGenerator : MonoBehaviour
                         if (placedTiles.Count == sizeX * sizeY)
                         {
                             Debug.Log("full map done");
-                            return;
+                            return true;
                         }
 
-                        generateTiles(world, newX, newY, neighbor);
-                        
+                        if (generateTiles(world, newX, newY, neighbor)) // Recurse for next tile
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            world[newX, newY] = null;
+                            placedTiles.RemoveAt(placedTiles.Count - 1);
+                            prevLocation.RemoveAt(prevLocation.Count - 1);
+                        }
+
                     }
 
 
@@ -110,16 +119,10 @@ public class mapGenerator : MonoBehaviour
             
 
         }
-        if(placed == false)
-        {
-            world[prevLocation[prevLocation.Count - 1].x, prevLocation[prevLocation.Count - 1].y] = null;
-            prevLocation.RemoveAt(prevLocation.Count-1);
-            placedTiles.RemoveAt(placedTiles.Count - 1);
-            return;
-        }
-       
-        
 
+
+
+        return false;
        
         // tile found no possible neighbors
         

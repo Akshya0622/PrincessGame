@@ -13,22 +13,52 @@ public class princessController : MonoBehaviour
     float speed = 3f;
     Rigidbody2D rigidbody2d;
     CinemachineVirtualCamera camera;
-   
+    private Animator animator;
+    public bool isMoving;
+    private Vector2 input;
 
     void Start()
     {
-        
+
         rigidbody2d = GetComponent<Rigidbody2D>();
         DontDestroyOnLoad(gameObject);
     }
- 
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     // Update is called once per frame
     void Update()
     {
-      
-        horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxis("Vertical");
+
+        if (!isMoving)
+        {
+
+            input.x = Input.GetAxisRaw("Horizontal");
+            input.y = Input.GetAxisRaw("Vertical");
+            if (input != Vector2.zero)
+            {
+                animator.SetFloat("moveX", input.x);
+                animator.SetFloat("moveY", input.y);
+                var targetPos = transform.position;
+                targetPos.x += input.x;
+                targetPos.y += input.y;
+                StartCoroutine(Move(targetPos));
+            }
+        }
+        animator.SetBool("isMoving", isMoving);
+    }
+    IEnumerator Move(Vector3 targetPos)
+    {
+        isMoving = true;
+        while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
+            yield return null;
+        }
+        transform.position = targetPos;
+        isMoving = false;
     }
 
     void FixedUpdate()
@@ -37,23 +67,29 @@ public class princessController : MonoBehaviour
         if (camera != null)
         {
             camera.Follow = transform;
-          
+
         }
         Vector2 position = rigidbody2d.position;
         position.x += speed * horizontal * Time.deltaTime;
         position.y += speed * vertical * Time.deltaTime;
-        rigidbody2d.MovePosition(position); // move player
+        if (horizontal != 0 && vertical != 0)
+        {
+            animator.SetFloat("moveX", horizontal);
+            animator.SetFloat("moveY", vertical);
+            rigidbody2d.MovePosition(position);
+        }
+        // move player
 
     }
 
     private void OnCollisionEnter2D(UnityEngine.Collision2D collision)
     {
-        if(collision.gameObject.tag == "dungeonEntrance")
+        if (collision.gameObject.tag == "dungeonEntrance")
         {
             SceneManager.LoadScene("Dungeon");
             Debug.Log("enter");
         }
-        if(collision.gameObject.tag == "weapon")
+        if (collision.gameObject.tag == "weapon")
         {
 
         }
