@@ -69,16 +69,8 @@ public class princessController : MonoBehaviour
             camera.Follow = transform;
 
         }
-        Vector2 position = rigidbody2d.position;
-        position.x += speed * horizontal * Time.deltaTime;
-        position.y += speed * vertical * Time.deltaTime;
-        if (horizontal != 0 && vertical != 0)
-        {
-            animator.SetFloat("moveX", horizontal);
-            animator.SetFloat("moveY", vertical);
-            rigidbody2d.MovePosition(position);
-        }
-        // move player
+        
+        
 
     }
 
