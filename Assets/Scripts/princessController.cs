@@ -3,24 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Cinemachine;
-
-
+using UnityEngine.UI;
 
 public class princessController : MonoBehaviour
 {
     float horizontal;
     float vertical;
     float speed = 3f;
-    Rigidbody2D rigidbody2d;
+    public GameObject messagePanel;
+    public Text message;
+    public Image textBox;
     CinemachineVirtualCamera camera;
     private Animator animator;
     public bool isMoving;
     private Vector2 input;
 
+
     void Start()
     {
 
-        rigidbody2d = GetComponent<Rigidbody2D>();
+       
         DontDestroyOnLoad(gameObject);
     }
     private void Awake()
@@ -84,6 +86,12 @@ public class princessController : MonoBehaviour
         if (collision.gameObject.tag == "weapon")
         {
 
+        }
+        if(collision.gameObject.tag == "knight")
+        {
+            message.text = "You encountered a knight!";
+            messagePanel.SetActive(true);
+            textBox.enabled = true;
         }
     }
 }

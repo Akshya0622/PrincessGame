@@ -6,6 +6,7 @@ TagManager:
   tags:
   - dungeonEntrance
   - weapon
+  - knight
   layers:
   - Default
   - TransparentFX

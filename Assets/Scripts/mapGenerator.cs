@@ -98,16 +98,7 @@ public class mapGenerator : MonoBehaviour
                             return true;
                         }
 
-                        if (generateTiles(world, newX, newY, neighbor)) // Recurse for next tile
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            world[newX, newY] = null;
-                            placedTiles.RemoveAt(placedTiles.Count - 1);
-                            prevLocation.RemoveAt(prevLocation.Count - 1);
-                        }
+                        generateTiles(world, newX, newY, neighbor);
 
                     }
 
