@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Cinemachine;
 using UnityEngine.UI;
+using TMPro;
 
 public class princessController : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class princessController : MonoBehaviour
     float vertical;
     float speed = 3f;
     public GameObject messagePanel;
-    public Text message;
+    public TMP_Text message;
     public Image textBox;
     CinemachineVirtualCamera camera;
     private Animator animator;

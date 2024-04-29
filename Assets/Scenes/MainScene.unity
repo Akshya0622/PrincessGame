@@ -256,6 +256,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4454380501701608773, guid: 22d97e5756df445cd84edb8f70b17255, type: 3}
+      propertyPath: textBox
+      value: 
+      objectReference: {fileID: 2046094969}
+    - target: {fileID: 4454380501701608773, guid: 22d97e5756df445cd84edb8f70b17255, type: 3}
       propertyPath: messagePanel
       value: 
       objectReference: {fileID: 1849713399}
