@@ -35,91 +35,19 @@ public class mapGenerator : MonoBehaviour
     public void makeGrid()
     {
         world = new Tile[sizeX, sizeY]; // make world 2d array
-        Vector2Int startPos = new Vector2Int(sizeX / 2, sizeY / 2); // start pos in the middle
+        
         Tile startTile = tilePrefabs[Random.Range(0, tilePrefabs.Length)];
-        world[startPos.x, startPos.y] = startTile; // random start tile placed
+        world[0,0] = startTile; // random start tile placed
         placedTiles.Add(startTile);
-        generateTiles(world, startPos.x, startPos.y, startTile);
+        generateTiles(world, 0, 0, startTile);
         
     }
     
-   void generateTiles(Tile[,] world, int x, int y, Tile tilePrfb)
+   bool generateTiles(Tile[,] world, int x, int y, Tile tilePrfb)
     {
-        Debug.Log("Generating tile at: " + x + ", " + y);
+       for(int i = 0; i < sizeX; i++)
         
-        
-        List<Vector2Int> directions = new List<Vector2Int>
-        {
-            new Vector2Int(0, 1),
-            new Vector2Int(0,-1),
-            new Vector2Int(-1,0),
-            new Vector2Int(1,0)
-        };
-
-
-        for (int i = 0; i < 4; i++) // shuffling list of directions
-        {
-            int randomIndex = Random.Range(i, 4);
-            Vector2Int temp = directions[i];
-            directions[i] = directions[randomIndex];
-            directions[randomIndex] = temp;
-        }
-
-
-        bool placed = false;
-        
-        foreach (Vector2Int direction in directions) // take the current tile and get the random direction, then check if any of the tiles that are connectable to the current tile are valid options to be placed into the map. If none of the tiles in one direction work, foreach(direction in directions) will select next direction...
-        {
-           
-            int newX = x + direction.x;
-            int newY = y + direction.y;
-
-            if (newX >= 0 && newX < sizeX && newY >= 0 && newY < sizeY && world[newX, newY] == null)
-            {
-               
-                Tile[] possibleNeighbors = getPossibleNeighbors(world, x, y, direction); // access from tile script
-                Debug.Log("Number of possible neighbors: " + possibleNeighbors.Length + "direction " + direction);
-                possibleNeighbors = weightedSelect(possibleNeighbors); // remake neighbors array with weights
-
-                foreach (Tile neighbor in possibleNeighbors) // checking neighbors in selected direction
-                {
-                    Debug.Log("Checking placement for neighbor: " + neighbor.name);
-                    if (canBePlaced(world, newX, newY, neighbor))
-                    {
-                        placed = true;
-                        world[newX, newY] = neighbor;
-                        placedTiles.Add(neighbor);
-                        prevLocation.Add(new Vector2Int(newX,newY));
-
-                        // Check if map is fully filled
-                        if (placedTiles.Count == sizeX * sizeY)
-                        {
-                            Debug.Log("full map done");
-                            
-                        }
-
-                        generateTiles(world, newX, newY, neighbor);
-                        break;
-                      
-
-                    }
-
-
-                }
-               
-
-            }
-            
-
-        }
-
-
-
-     
-       
-        // tile found no possible neighbors
-        
-        
+  
     }
     void drawMap()
     {
