@@ -43,7 +43,7 @@ public class mapGenerator : MonoBehaviour
         
     }
     
-   bool generateTiles(Tile[,] world, int x, int y, Tile tilePrfb)
+   void generateTiles(Tile[,] world, int x, int y, Tile tilePrfb)
     {
         Debug.Log("Generating tile at: " + x + ", " + y);
         
@@ -95,10 +95,12 @@ public class mapGenerator : MonoBehaviour
                         if (placedTiles.Count == sizeX * sizeY)
                         {
                             Debug.Log("full map done");
-                            return true;
+                            
                         }
 
                         generateTiles(world, newX, newY, neighbor);
+                        break;
+                      
 
                     }
 
@@ -113,7 +115,7 @@ public class mapGenerator : MonoBehaviour
 
 
 
-        return false;
+     
        
         // tile found no possible neighbors
         
