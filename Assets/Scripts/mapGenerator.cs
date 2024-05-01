@@ -45,7 +45,14 @@ public class mapGenerator : MonoBehaviour
     
    bool generateTiles(Tile[,] world, int x, int y, Tile tilePrfb)
     {
-       for(int i = 0; i < sizeX; i++)
+        int row = 0;
+        for(int i = 0; i < sizeX; i++)
+        {
+            Tile[] neighbors = getPossibleNeighbors(world, sizeX, row, new Vector2Int(1, 0));
+            Tile[] weightedSelectNeighbors = weightedSelect(neighbors);
+            if(weightedSelectNeighbors[i])
+        }
+       
         
   
     }
