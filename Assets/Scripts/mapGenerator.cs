@@ -37,55 +37,96 @@ public class mapGenerator : MonoBehaviour
         world = new Tile[sizeX, sizeY]; // make world 2d array
         
         Tile startTile = tilePrefabs[Random.Range(0, tilePrefabs.Length)];
-        world[0,0] = startTile; // random start tile placed
+        world[0,0] = startTile; // 
         placedTiles.Add(startTile);
-        generateTiles(world, 0, 0, startTile);
+        generateTiles(world);
         
     }
-    
-   bool generateTiles(Tile[,] world, int x, int y, Tile tilePrfb)
+
+    bool generateTiles(Tile[,] world)
     {
-        int row = 0;
-        for(int i = 0; i < sizeX; i++)
+        Vector2Int emptyPosition = FindEmpty(world);
+
+        // map done
+        if (emptyPosition.x == -1 && emptyPosition.y == -1)
         {
-            Tile[] neighbors = getPossibleNeighbors(world, sizeX, row, new Vector2Int(1, 0));
-            Tile[] weightedSelectNeighbors = weightedSelect(neighbors);
-            if(weightedSelectNeighbors[i])
+          
+            
+            return true;
         }
+
+        int row = emptyPosition.x;
+        int col = emptyPosition.y;
+        Tile[] weightedTiles = weightedSelect(tilePrefabs);
        
+        foreach (Tile tilePrefab in weightedTiles)
+        {
+           
+            if (canBePlaced(world, row, col, tilePrefab))
+            {
+               
+                world[row, col] = tilePrefab;
+               
+
+               
+                if (generateTiles(world))
+                {
+                    return true;
+                }
+                   
+
+                
+                world[row, col] = null;
+                
+            }
+        }
+
+       
+        return false;
+    }
+    Vector2Int FindEmpty(Tile[,] world)
+    {
+        for(int row = 0; row < sizeY; row++)
+        {
+            for(int col = 0; col < sizeX; col++)
+            {
+                if (world[row,col] == null)
+                {
+                    return new Vector2Int(row,col);
+                }
+            }
+        }
+
         
-  
+        return new Vector2Int(-1,-1);
+        
     }
     void drawMap()
     {
-        for(int i = 0; i < sizeY; i++)
+        for(int row = 0; row < sizeY; row++)
         {
-            for( int j = 0; j < sizeX; j++)
+            for( int col = 0; col < sizeX; col++)
             {
-                Instantiate(world[i, j].gameObject, new Vector3(i, j, 0), Quaternion.identity);
+                Instantiate(world[row, col].gameObject, new Vector3(row, col, 0), Quaternion.identity);
             }
         }
-        Debug.Log("placed tiles: "+placedTiles.Count);
+      
     }
 
         bool canBePlaced(Tile[,] world, int x, int y, Tile tile)
         {
-            if (x < 0 || x >= sizeX || y < 0 || y >= sizeY || world[x, y] != null)
-            {
-                Debug.Log("Cannot place tile at: " + x + ", " + y + ". Out of bounds or tile already exists.");
-                return false;
-            }
+           
 
             
 
-            bool canConnectUp = canConnectToNeigh(world, x, y + 1, tile.upNeighbors);
+            bool canConnectUp = canConnectToNeigh(world, x, y+1, tile.upNeighbors);
             if (canConnectUp == false)
             {
                 Debug.Log("tried but couldnt 1");
                 return false;
 
             }
-            bool canConnectDown = canConnectToNeigh(world, x, y - 1, tile.downNeighbors);
+            bool canConnectDown = canConnectToNeigh(world, x, y-1, tile.downNeighbors);
             if (canConnectDown == false)
             {
                 Debug.Log("tried but couldnt 2");
@@ -97,7 +138,7 @@ public class mapGenerator : MonoBehaviour
                 Debug.Log("tried but couldnt 3");
                 return false;
             }
-            bool canConnectRight = canConnectToNeigh(world, x + 1, y, tile.rightNeighbors);
+            bool canConnectRight = canConnectToNeigh(world, x+1, y, tile.rightNeighbors);
             if(canConnectRight == false)
             {
                 Debug.Log("tried but couldnt 4");
@@ -110,18 +151,18 @@ public class mapGenerator : MonoBehaviour
         
 
         }
-        bool canConnectToNeigh(Tile[,] world, int x, int y, Tile[] possibleNeighbors)
+        bool canConnectToNeigh(Tile[,] world, int row, int col, Tile[] possibleNeighbors)
         {
            if( possibleNeighbors == null || possibleNeighbors.Length == 0 )
             {
                 return true;
             }
-            if(x>= 0 && x<sizeX && y>= 0 && y<sizeY)
+            if(row>= 0 && row<sizeY && col>= 0 && col<sizeX)
             {
                
                 foreach(Tile neighborPrefab in possibleNeighbors)
                 {
-                    if (world[x,y] == null ||  world[x,y] == neighborPrefab)
+                    if (world[row,col] == null ||  world[row,col] == neighborPrefab)
                     {
                         return true;
                         
@@ -132,9 +173,9 @@ public class mapGenerator : MonoBehaviour
             return true;
         }
 
-        Tile[]getPossibleNeighbors(Tile [,] world, int x, int y, Vector2Int direction)
+        Tile[]getPossibleNeighbors(Tile [,] world, int row, int col, Vector2Int direction)
         {
-            Tile t = world[x, y];
+            Tile t = world[row, col];
             if(t == null)
             {
                 return new Tile[0];
