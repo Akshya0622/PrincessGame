@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1905237586827854510}
   - component: {fileID: 1728875455777239929}
   - component: {fileID: -6993105605220744109}
+  - component: {fileID: 6907942069236896242}
   m_Layer: 0
   m_Name: water-topleft-corner_0
   m_TagString: Untagged
@@ -108,3 +109,58 @@ MonoBehaviour:
   leftNeighbors:
   - {fileID: -1973918532699618347, guid: 3b29671c2a0c2ba478318d8b88231aa0, type: 3}
   - {fileID: 8910353280305802061, guid: 5dc0be7883da1ba41977bee8322372f0, type: 3}
+--- !u!60 &6907942069236896242
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6813325557741567848}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.06499863, y: 0.4960976}
+      - {x: -0.090815544, y: 0.33664522}
+      - {x: -0.23441601, y: 0.23132786}
+      - {x: -0.41320324, y: 0.12266049}
+      - {x: -0.50478363, y: 0.121300355}
+      - {x: -0.5, y: -0.5}
+      - {x: 0.5, y: -0.5}
+      - {x: 0.490736, y: 0.49382362}
+  m_UseDelaunayMesh: 0
