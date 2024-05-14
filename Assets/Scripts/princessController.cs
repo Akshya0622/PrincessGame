@@ -18,6 +18,7 @@ public class princessController : MonoBehaviour
     private Animator animator;
     public bool isMoving;
     private Vector2 input;
+    Rigidbody2D rb;
 
 
     void Start()
@@ -29,40 +30,20 @@ public class princessController : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if (!isMoving)
-        {
-
-            input.x = Input.GetAxisRaw("Horizontal");
-            input.y = Input.GetAxisRaw("Vertical");
-            if (input != Vector2.zero)
-            {
-                animator.SetFloat("moveX", input.x);
-                animator.SetFloat("moveY", input.y);
-                var targetPos = transform.position;
-                targetPos.x += input.x;
-                targetPos.y += input.y;
-                StartCoroutine(Move(targetPos));
-            }
-        }
-        animator.SetBool("isMoving", isMoving);
+        horizontal = Input.GetAxisRaw("Horizontal");
+        vertical = Input.GetAxisRaw("Vertical");
+        animator.SetFloat("moveX", horizontal);
+        animator.SetFloat("moveY", vertical);
+        animator.SetBool("isMoving", Mathf.Abs(horizontal) > 0 || Mathf.Abs(vertical) > 0);
     }
-    IEnumerator Move(Vector3 targetPos)
-    {
-        isMoving = true;
-        while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
-            yield return null;
-        }
-        transform.position = targetPos;
-        isMoving = false;
-    }
+    
 
     void FixedUpdate()
     {
@@ -72,9 +53,10 @@ public class princessController : MonoBehaviour
             camera.Follow = transform;
 
         }
-        
-        
-
+        float moveX = Input.GetAxisRaw("Horizontal");
+        float moveY = Input.GetAxisRaw("Vertical");
+        Vector2 movement = new Vector2(moveX, moveY).normalized * speed;
+        rb.velocity = movement;
     }
 
     private void OnCollisionEnter2D(UnityEngine.Collision2D collision)
@@ -96,3 +78,5 @@ public class princessController : MonoBehaviour
         }
     }
 }
+
+

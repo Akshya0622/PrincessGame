@@ -1218,8 +1218,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18d20d36ec9a11041a5545c2e750a970, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sizeX: 10
-  sizeY: 10
+  sizeX: 5
+  sizeY: 5
   tilePrefabs:
   - {fileID: 3285444893151614797, guid: 4f9d610fd8325bd489bc205ca1d2d512, type: 3}
   - {fileID: 8263158585795961983, guid: f906a80a6cb7447c4a76c770d2e391f1, type: 3}

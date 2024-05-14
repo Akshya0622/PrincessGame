@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
 public class mapGenerator : MonoBehaviour
@@ -11,14 +12,16 @@ public class mapGenerator : MonoBehaviour
     public int sizeY;
     public Tile[] tilePrefabs;
     Dictionary<Tile, int> tileWeightss; //weights of each tile so we can have certain tiles being placed more often
+    Dictionary<int, Tile> identifiers;
     public int[] weightValues;
+    public int[] identify;
     List<Tile> placedTiles = new List<Tile>();
-    Tile[,] world;
-    List<Vector2Int> prevLocation = new List<Vector2Int>();
-    bool back;
+    int[,] world;
+   
     public void Start()
     {
         tileWeightss = populateTileWeights();
+        identifiers = populateIdentifiers();
         makeGrid();
         drawMap();
 
@@ -32,18 +35,27 @@ public class mapGenerator : MonoBehaviour
         }
         return tileWeights;
     }
+    Dictionary<int,Tile> populateIdentifiers()
+    {
+        Dictionary<int, Tile> iden = new Dictionary<int, Tile>();
+        for (int i = 0; i < tilePrefabs.Length; i++)
+        {
+            iden.Add(identify[i], tilePrefabs[i]);
+        }
+        return iden;
+    }
     public void makeGrid()
     {
-        world = new Tile[sizeX, sizeY]; // make world 2d array
+        world = new int[sizeX, sizeY]; // make world 2d array
         
         Tile startTile = tilePrefabs[Random.Range(0, tilePrefabs.Length)];
-        world[0,0] = startTile; // 
-        placedTiles.Add(startTile);
+        world[0,0] = startTile.number; // 
+       
         generateTiles(world);
         
     }
 
-    bool generateTiles(Tile[,] world)
+    bool generateTiles(int[,] world)
     {
         Vector2Int emptyPosition = FindEmpty(world);
 
@@ -57,9 +69,9 @@ public class mapGenerator : MonoBehaviour
 
         int row = emptyPosition.x;
         int col = emptyPosition.y;
-        Tile[] weightedTiles = weightedSelect(tilePrefabs);
+        int[] weightedTiles = weightedSelect(tilePrefabs);
        
-        foreach (Tile tilePrefab in weightedTiles)
+        foreach (int tilePrefab in weightedTiles)
         {
            
             if (canBePlaced(world, row, col, tilePrefab))
@@ -76,7 +88,7 @@ public class mapGenerator : MonoBehaviour
                    
 
                 
-                world[row, col] = null;
+                world[row, col] = 0;
                 
             }
         }
@@ -84,13 +96,13 @@ public class mapGenerator : MonoBehaviour
        
         return false;
     }
-    Vector2Int FindEmpty(Tile[,] world)
+    Vector2Int FindEmpty(int[,] world)
     {
         for(int row = 0; row < sizeY; row++)
         {
             for(int col = 0; col < sizeX; col++)
             {
-                if (world[row,col] == null)
+                if (world[row,col] == 0)
                 {
                     return new Vector2Int(row,col);
                 }
@@ -103,19 +115,22 @@ public class mapGenerator : MonoBehaviour
     }
     void drawMap()
     {
+
         for(int row = 0; row < sizeY; row++)
         {
             for( int col = 0; col < sizeX; col++)
             {
-                Instantiate(world[row, col].gameObject, new Vector3(row, col, 0), Quaternion.identity);
+                identifiers.TryGetValue(world[row, col], out Tile t);
+                Instantiate(t, new Vector3(row, col, 0), Quaternion.identity);
             }
         }
       
     }
 
-        bool canBePlaced(Tile[,] world, int x, int y, Tile tile)
+        bool canBePlaced(int[,] world, int x, int y, int tileNum)
         {
-           
+        Tile tile;
+        identifiers.TryGetValue(tileNum, out tile);
 
             
 
@@ -151,7 +166,7 @@ public class mapGenerator : MonoBehaviour
         
 
         }
-        bool canConnectToNeigh(Tile[,] world, int row, int col, Tile[] possibleNeighbors)
+        bool canConnectToNeigh(int[,] world, int row, int col, Tile[] possibleNeighbors)
         {
            if( possibleNeighbors == null || possibleNeighbors.Length == 0 )
             {
@@ -162,7 +177,7 @@ public class mapGenerator : MonoBehaviour
                
                 foreach(Tile neighborPrefab in possibleNeighbors)
                 {
-                    if (world[row,col] == null ||  world[row,col] == neighborPrefab)
+                    if (world[row,col] == 0 ||  world[row,col] == neighborPrefab.number)
                     {
                         return true;
                         
@@ -173,7 +188,7 @@ public class mapGenerator : MonoBehaviour
             return true;
         }
 
-        Tile[]getPossibleNeighbors(Tile [,] world, int row, int col, Vector2Int direction)
+        /*Tile[]getPossibleNeighbors(Tile [,] world, int row, int col, Vector2Int direction)
         {
             Tile t = world[row, col];
             if(t == null)
@@ -204,10 +219,10 @@ public class mapGenerator : MonoBehaviour
                 return new Tile[0];
             }
 
-        }
-        Tile[] weightedSelect(Tile[] neighbors)
+        }*/
+        int[] weightedSelect(Tile[] neighbors)
         {
-           List<Tile> weightedSelect = new List<Tile>();
+           List<int> weightedSelect = new List<int>();
             
            foreach(Tile neighbor in neighbors)
             {
@@ -216,15 +231,15 @@ public class mapGenerator : MonoBehaviour
                 {
                     for(int i = 0; i < weight; i++)
                     {
-                        weightedSelect.Add(neighbor);
+                        weightedSelect.Add(neighbor.number);
                     }
                 }
             }
-            Tile[] shuffle = weightedSelect.ToArray();
+            int[] shuffle = weightedSelect.ToArray();
             for (int i = 0; i < shuffle.Length; i++)
             {
                 int randomIndex = Random.Range(i, shuffle.Length);
-                Tile temp = shuffle[i];
+                int temp = shuffle[i];
                 shuffle[i] = shuffle[randomIndex];
                 shuffle[randomIndex] = temp;
             }

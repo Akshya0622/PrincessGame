@@ -12,6 +12,7 @@ public class Tile : MonoBehaviour
     public Tile[] downNeighbors;
     public Tile[] rightNeighbors;
     public Tile[] leftNeighbors;
+    public int number;
 }
 
 /* public List<Tile> possibilities;
