@@ -10,11 +10,11 @@ public class mapGenerator : MonoBehaviour
 {
     public int sizeX;
     public int sizeY;
-    public Tile[] tilePrefabs;
+    public List<Tile> tilePrefabs;
     Dictionary<Tile, int> tileWeightss; //weights of each tile so we can have certain tiles being placed more often
     Dictionary<int, Tile> identifiers;
     public int[] weightValues;
-    public int[] identify;
+    List<int> weightedTiles;
     List<Tile> placedTiles = new List<Tile>();
     int[,] world;
    
@@ -22,6 +22,7 @@ public class mapGenerator : MonoBehaviour
     {
         tileWeightss = populateTileWeights();
         identifiers = populateIdentifiers();
+        weightedTiles = weightedSelect(tilePrefabs);
         makeGrid();
         drawMap();
 
@@ -29,7 +30,7 @@ public class mapGenerator : MonoBehaviour
     Dictionary<Tile,int> populateTileWeights() // create a dictionary from the list of weights and tile prefabs
     {
         Dictionary<Tile, int> tileWeights = new Dictionary<Tile, int>();
-        for (int i = 0; i< tilePrefabs.Length; i++)
+        for (int i = 0; i< tilePrefabs.Count; i++)
         {
             tileWeights.Add(tilePrefabs[i], weightValues[i]);
         }
@@ -38,17 +39,18 @@ public class mapGenerator : MonoBehaviour
     Dictionary<int,Tile> populateIdentifiers()
     {
         Dictionary<int, Tile> iden = new Dictionary<int, Tile>();
-        for (int i = 0; i < tilePrefabs.Length; i++)
+        for (int i = 0; i < tilePrefabs.Count; i++)
         {
-            iden.Add(identify[i], tilePrefabs[i]);
+            iden.Add(i+1, tilePrefabs[i]);
         }
+        Debug.Log(iden.Count);
         return iden;
     }
     public void makeGrid()
     {
         world = new int[sizeX, sizeY]; // make world 2d array
         
-        Tile startTile = tilePrefabs[Random.Range(0, tilePrefabs.Length)];
+        Tile startTile = tilePrefabs[Random.Range(0, tilePrefabs.Count)];
         world[0,0] = startTile.number; // 
        
         generateTiles(world);
@@ -69,7 +71,9 @@ public class mapGenerator : MonoBehaviour
 
         int row = emptyPosition.x;
         int col = emptyPosition.y;
-        int[] weightedTiles = weightedSelect(tilePrefabs);
+
+        List<int> copy = new List<int>(weightedTiles);
+        
        
         foreach (int tilePrefab in weightedTiles)
         {
@@ -130,7 +134,11 @@ public class mapGenerator : MonoBehaviour
         bool canBePlaced(int[,] world, int x, int y, int tileNum)
         {
         Tile tile;
-        identifiers.TryGetValue(tileNum, out tile);
+        if(!identifiers.TryGetValue(tileNum, out tile))
+        {
+            
+            Debug.Log("ahhhhh");
+        }
 
             
 
@@ -177,7 +185,8 @@ public class mapGenerator : MonoBehaviour
                
                 foreach(Tile neighborPrefab in possibleNeighbors)
                 {
-                    if (world[row,col] == 0 ||  world[row,col] == neighborPrefab.number)
+                    
+                    if (world[row,col] == 0 ||  world[row,col] == tilePrefabs.IndexOf(neighborPrefab) + 1)
                     {
                         return true;
                         
@@ -220,7 +229,7 @@ public class mapGenerator : MonoBehaviour
             }
 
         }*/
-        int[] weightedSelect(Tile[] neighbors)
+        List<int> weightedSelect(List<Tile> neighbors)
         {
            List<int> weightedSelect = new List<int>();
             
@@ -231,25 +240,28 @@ public class mapGenerator : MonoBehaviour
                 {
                     for(int i = 0; i < weight; i++)
                     {
-                        weightedSelect.Add(neighbor.number);
+                        weightedSelect.Add(tilePrefabs.IndexOf(neighbor) + 1);
                     }
                 }
             }
-            int[] shuffle = weightedSelect.ToArray();
-            for (int i = 0; i < shuffle.Length; i++)
-            {
-                int randomIndex = Random.Range(i, shuffle.Length);
-                int temp = shuffle[i];
-                shuffle[i] = shuffle[randomIndex];
-                shuffle[randomIndex] = temp;
-            }
-            return shuffle;
+        return weightedSelect;
+           
+        }
+    void shuffle(List<int> shuffle)
+    {
+        for (int i = 0; i < shuffle.Count; i++)
+        {
+            int randomIndex = Random.Range(i, shuffle.Count);
+            int temp = shuffle[i];
+            shuffle[i] = shuffle[randomIndex];
+            shuffle[randomIndex] = temp;
+        }
 
-        } 
+    }
 
 
 
 
 
-    
+
 }
