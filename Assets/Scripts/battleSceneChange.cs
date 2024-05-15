@@ -8,7 +8,7 @@ public class battleSceneChange : MonoBehaviour
 
     public void ChangeScene(string sceneName)
     {
-        SceneManager.LoadScene("Dungeon");
+        SceneManager.LoadScene(sceneName);
     }
 
 }
