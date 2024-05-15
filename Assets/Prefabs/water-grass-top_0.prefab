@@ -122,6 +122,7 @@ MonoBehaviour:
   leftNeighbors:
   - {fileID: -1973918532699618347, guid: 3b29671c2a0c2ba478318d8b88231aa0, type: 3}
   - {fileID: 8910353280305802061}
+  number: 30
 --- !u!60 &110231885051693413
 PolygonCollider2D:
   m_ObjectHideFlags: 0

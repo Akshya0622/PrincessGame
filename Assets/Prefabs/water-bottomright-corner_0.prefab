@@ -111,6 +111,7 @@ MonoBehaviour:
   - {fileID: 8659245721398632438, guid: c37535527b49e014cadd5a4c1a38a463, type: 3}
   - {fileID: -8471571260215440782, guid: 33361f5249ac445d3bddb227f648129d, type: 3}
   - {fileID: 3285819003943045172, guid: f8c9c8a1bf27d3c4e92f7a7af63a8b07, type: 3}
+  number: 25
 --- !u!60 &1663450673223459793
 PolygonCollider2D:
   m_ObjectHideFlags: 0

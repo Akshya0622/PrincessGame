@@ -120,3 +120,4 @@ MonoBehaviour:
   leftNeighbors:
   - {fileID: -6079274656476141582}
   - {fileID: -2194852058801843480, guid: 0ab5b851abbcac84885123a6ba512ef4, type: 3}
+  number: 9

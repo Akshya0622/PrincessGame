@@ -73,9 +73,9 @@ public class mapGenerator : MonoBehaviour
         int col = emptyPosition.y;
 
         List<int> copy = new List<int>(weightedTiles);
-        
-       
-        foreach (int tilePrefab in weightedTiles)
+
+        shuffle(copy);
+        foreach (int tilePrefab in copy)
         {
            
             if (canBePlaced(world, row, col, tilePrefab))
@@ -186,7 +186,7 @@ public class mapGenerator : MonoBehaviour
                 foreach(Tile neighborPrefab in possibleNeighbors)
                 {
                     
-                    if (world[row,col] == 0 ||  world[row,col] == tilePrefabs.IndexOf(neighborPrefab) + 1)
+                    if (world[row,col] == 0 ||  world[row,col] == neighborPrefab.number)
                     {
                         return true;
                         
@@ -240,7 +240,7 @@ public class mapGenerator : MonoBehaviour
                 {
                     for(int i = 0; i < weight; i++)
                     {
-                        weightedSelect.Add(tilePrefabs.IndexOf(neighbor) + 1);
+                        weightedSelect.Add(neighbor.number);
                     }
                 }
             }
@@ -249,14 +249,16 @@ public class mapGenerator : MonoBehaviour
         }
     void shuffle(List<int> shuffle)
     {
-        for (int i = 0; i < shuffle.Count; i++)
+        int x = shuffle.Count;
+        while(x>1)
         {
-            int randomIndex = Random.Range(i, shuffle.Count);
-            int temp = shuffle[i];
-            shuffle[i] = shuffle[randomIndex];
-            shuffle[randomIndex] = temp;
+            x--;
+            int k = Random.Range(0, x + 1);
+            int temp = shuffle[k];
+            shuffle[k] = shuffle[x];
+            shuffle[x] = temp;
         }
-
+       
     }
 
 

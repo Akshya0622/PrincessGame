@@ -128,3 +128,4 @@ MonoBehaviour:
   leftNeighbors:
   - {fileID: 7464748713605031363, guid: c15adea59a99a94419ddce3964cd20ce, type: 3}
   - {fileID: 4930171819336804557, guid: 53ad13e3fbe8ad545aa826778032e389, type: 3}
+  number: 5

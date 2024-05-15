@@ -113,3 +113,4 @@ MonoBehaviour:
   leftNeighbors:
   - {fileID: -6079274656476141582, guid: b503927c69145a5449d4b2214e8bc2ee, type: 3}
   - {fileID: -5297096058974650495, guid: 24c3faf13de26cd4bba714dc43277129, type: 3}
+  number: 19
