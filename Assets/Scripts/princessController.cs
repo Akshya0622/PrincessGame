@@ -19,7 +19,7 @@ public class princessController : MonoBehaviour
     public bool isMoving;
     private Vector2 input;
     Rigidbody2D rb;
-
+    public GameObject button;
 
     void Start()
     {
@@ -75,6 +75,7 @@ public class princessController : MonoBehaviour
             message.text = "You encountered a knight!";
             messagePanel.SetActive(true);
             textBox.enabled = true;
+            button.SetActive(true);
         }
     }
 }

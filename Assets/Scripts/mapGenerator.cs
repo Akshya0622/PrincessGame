@@ -24,6 +24,7 @@ public class mapGenerator : MonoBehaviour
         identifiers = populateIdentifiers();
         weightedTiles = weightedSelect(tilePrefabs);
         makeGrid();
+        Debug.Log("map complete");
         drawMap();
 
     }
@@ -233,6 +234,7 @@ public class mapGenerator : MonoBehaviour
         {
            List<int> weightedSelect = new List<int>();
             
+           
            foreach(Tile neighbor in neighbors)
             {
                 int weight;
