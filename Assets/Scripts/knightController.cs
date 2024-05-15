@@ -11,7 +11,7 @@ public class knightController : MonoBehaviour
     private Rigidbody2D rb;
     public int pickDir;
     private Animator animator;
-
+    public bool canMove = true;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -31,66 +31,79 @@ public class knightController : MonoBehaviour
     void Update()
     {
 
-        timer += Time.deltaTime;
+        if (canMove)
+        {
+            timer += Time.deltaTime;
 
-        
-        
-        if (timer <= walkDuration)
-        {
-           if(pickDir < 5)
+
+            if (timer <= walkDuration)
+
             {
-                if (walkingRight == true)
+
+                if (pickDir < 5)
                 {
-                    rb.velocity = Vector2.right * speed;
-                    updateAnimation(1f, 0f, true);
+                    if (walkingRight == true)
+                    {
+                        rb.velocity = Vector2.right * speed;
+                        updateAnimation(1f, 0f, true);
+                    }
+                    else
+                    {
+                        rb.velocity = Vector2.left * speed;
+                        updateAnimation(-1f, 0f, true);
+                    }
                 }
                 else
                 {
-                    rb.velocity = Vector2.left * speed;
-                    updateAnimation(-1f, 0f, true);
+                    if (walkingUp == true)
+                    {
+                        rb.velocity = Vector2.up * speed;
+                        updateAnimation(0f, 1f, true);
+                    }
+                    else
+                    {
+                        rb.velocity = Vector2.down * speed;
+                        updateAnimation(0f, -1f, true);
+                    }
                 }
+
             }
-           else
+
+            else if (timer <= walkDuration + turnDuration)
             {
-                if (walkingUp == true)
-                {
-                    rb.velocity = Vector2.up * speed;
-                    updateAnimation(0f, 1f, true);
-                }
-                else
-                {
-                    rb.velocity = Vector2.down * speed;
-                    updateAnimation(0f, -1f, true);
-                }
+                // stop movingggg
+                rb.velocity = Vector2.zero;
+                updateAnimation(0f, 0f, false);
             }
-           
-        }
-       
-        else if (timer <= walkDuration + turnDuration)
-        {
-            // stop movingggg
-            rb.velocity = Vector2.zero;
-            updateAnimation(0f, 0f, false);
-        }
-        //change direc and reset timer
-        else
-        {
-            if(pickDir < 5)
-            {
-                walkingRight = !walkingRight;
-            }
+            //change direc and reset timer
             else
             {
-                walkingUp = !walkingUp;
+                if (pickDir < 5)
+                {
+                    walkingRight = !walkingRight;
+                }
+                else
+                {
+                    walkingUp = !walkingUp;
+                }
+
+                timer = 0f;
+
             }
-            
-            timer = 0f;
-        }
+        }   
     }
     void updateAnimation(float moveX, float moveY, bool isMoving)
     {
         animator.SetFloat("moveX", moveX);
         animator.SetFloat("moveY", moveY);
         animator.SetBool("isMoving", isMoving);
+    }
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "princess")
+        {
+            canMove = false;
+            Debug.Log("what");
+        }
     }
 }
