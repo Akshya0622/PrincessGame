@@ -2,13 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class battleSceneChange : MonoBehaviour
 {
+    public Camera battleCam;
+    public Camera mainCamera;
+    public GameObject purpleBox;
 
-    public void ChangeScene(string sceneName)
+    public void ChangeScene()
     {
-        SceneManager.LoadScene(sceneName);
+        battleCam.enabled = true;
+        mainCamera.enabled = false;
+        purpleBox.SetActive(false);
+        
     }
 
 }

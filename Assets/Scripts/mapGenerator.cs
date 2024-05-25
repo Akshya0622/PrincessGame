@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.WSA;
 using Random = UnityEngine.Random;
 
 public class mapGenerator : MonoBehaviour
@@ -17,14 +18,29 @@ public class mapGenerator : MonoBehaviour
     List<int> weightedTiles;
     List<Tile> placedTiles = new List<Tile>();
     int[,] world;
-   
+    HashSet<int> up = new HashSet<int>();
+    HashSet<int> down = new HashSet<int>();
+    HashSet<int> left = new HashSet<int>();
+    HashSet<int> right = new HashSet<int>();
+    public List<int> tiles1to35;
     public void Start()
     {
+        for(int i = 0; i < tilePrefabs.Count; i++)
+        {
+            up.Add(i + 1);
+            down.Add(i + 1);
+            left.Add(i + 1);
+            right.Add(i + 1);
+        }
+        for(int i = 1; i<=35; i++)
+        {
+            tiles1to35.Add(i);
+        }
         tileWeightss = populateTileWeights();
         identifiers = populateIdentifiers();
         weightedTiles = weightedSelect(tilePrefabs);
         makeGrid();
-        Debug.Log("map complete");
+       
         drawMap();
 
     }
@@ -54,70 +70,135 @@ public class mapGenerator : MonoBehaviour
         Tile startTile = tilePrefabs[Random.Range(0, tilePrefabs.Count)];
         world[0,0] = startTile.number; // 
        
-        generateTiles(world);
+        generateTiles(world,0,0);
         
     }
-
-    bool generateTiles(int[,] world)
+    public void makeUpSet(int row, int col)
     {
-        Vector2Int emptyPosition = FindEmpty(world);
-
-        // map done
-        if (emptyPosition.x == -1 && emptyPosition.y == -1)
+        if (row > 0)
         {
-          
-            
+            int index = world[row - 1, col];// check the tile  above where we are
+            Tile t = null;
+            if (index > 0)
+            {
+                t = tilePrefabs[index - 1];
+                for(int i = 0; i < t.downNeighbors.Count();i++) // look thru that tiles down neighbors (cause those are the ones we can place)
+                {
+                    up.Add(t.downNeighbors[i].number); // add its number to the up set
+                }
+
+            }
+
+        }
+    }
+    public void makeDownSet(int row, int col)
+    {
+        if (row < sizeY)
+        {
+            int index = world[row + 1, col];// check the tile below where we are
+            Tile t = null;
+            if (index > 0)
+            {
+                t = tilePrefabs[index - 1];
+                for (int i = 0; i < t.upNeighbors.Count(); i++) // look thru that tiles up neighbors (cause those are the ones we can place)
+                {
+                    down.Add(t.upNeighbors[i].number); // add its number to the down set
+                }
+
+            }
+
+        }
+    }
+    public void makeLeftSet(int row, int col)
+    {
+        if (col > 0)
+        {
+            int index = world[row, col-1];// check the tile to the left of where we are
+            Tile t = null;
+            if (index > 0)
+            {
+                t = tilePrefabs[index - 1];
+                for (int i = 0; i < t.rightNeighbors.Count(); i++) // look thru that tiles right neighbors (cause those are the ones we can place)
+                {
+                    left.Add(t.rightNeighbors[i].number); // add its number to the left set
+                }
+
+            }
+
+        }
+    }
+    public void makeRightSet(int row, int col)
+    {
+        if (col< sizeX)
+        {
+            int index = world[row, col+1];// check the tile to the right of where we are
+            Tile t = null;
+            if (index > 0)
+            {
+                t = tilePrefabs[index - 1];
+                for (int i = 0; i < t.leftNeighbors.Count(); i++) // look thru that tiles left neighbors (cause those are the ones we can place)
+                {
+                    right.Add(t.leftNeighbors[i].number); // add its number to the up set
+                }
+
+            }
+
+        }
+    }
+
+
+    bool generateTiles(int[,] world, int row, int col)
+    {
+        makeUpSet(row, col);
+        makeDownSet(row, col);
+        makeLeftSet(row, col);  
+        makeRightSet(row, col);
+        HashSet<int> s = up;
+        HashSet<int> x = left;
+        s.IntersectWith(x);
+        x = right;
+        s.IntersectWith(x);
+        x = down;
+        s.IntersectWith(x);
+
+        Debug.Log("s" +s);
+        // map done
+        if (row == sizeY - 1 && col == sizeX - 1)
+        {
             return true;
         }
 
-        int row = emptyPosition.x;
-        int col = emptyPosition.y;
-
-        List<int> copy = new List<int>(weightedTiles);
-
-        shuffle(copy);
-        foreach (int tilePrefab in copy)
+     
+       
+        foreach (int tilePrefab in tiles1to35 )
         {
-           
-            if (canBePlaced(world, row, col, tilePrefab))
+            if(s.Contains(tilePrefab))
             {
-               
-                world[row, col] = tilePrefab;
-               
 
-               
-                if (generateTiles(world))
+                world[row, col] = tilePrefab;
+
+                int nextRow = row;
+                int nextCol = col + 1;
+
+                if (nextCol >= sizeX)
+                {
+                    nextCol = 0;
+                    nextRow++;
+                }
+
+                if (generateTiles(world, nextRow, nextCol))
                 {
                     return true;
                 }
-                   
-
-                
                 world[row, col] = 0;
-                
             }
-        }
 
-       
+                
+            
+        }
         return false;
     }
-    Vector2Int FindEmpty(int[,] world)
-    {
-        for(int row = 0; row < sizeY; row++)
-        {
-            for(int col = 0; col < sizeX; col++)
-            {
-                if (world[row,col] == 0)
-                {
-                    return new Vector2Int(row,col);
-                }
-            }
-        }
-
-        
-        return new Vector2Int(-1,-1);
-        
-    }
+ 
     void drawMap()
     {
 
