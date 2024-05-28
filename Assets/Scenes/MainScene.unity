@@ -725,7 +725,6 @@ GameObject:
   m_Component:
   - component: {fileID: 839335955}
   - component: {fileID: 839335957}
-  - component: {fileID: 839335956}
   m_Layer: 0
   m_Name: battleCam
   m_TagString: Untagged
@@ -748,14 +747,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2043399533}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!81 &839335956
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 839335954}
-  m_Enabled: 1
 --- !u!20 &839335957
 Camera:
   m_ObjectHideFlags: 0
@@ -2611,7 +2602,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2124085506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2624,8 +2615,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18d20d36ec9a11041a5545c2e750a970, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sizeX: 10
-  sizeY: 10
+  sizeX: 5
+  sizeY: 5
   tilePrefabs:
   - {fileID: 3285444893151614797, guid: 4f9d610fd8325bd489bc205ca1d2d512, type: 3}
   - {fileID: 8263158585795961983, guid: f906a80a6cb7447c4a76c770d2e391f1, type: 3}

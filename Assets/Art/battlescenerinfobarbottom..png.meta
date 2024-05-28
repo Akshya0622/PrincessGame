@@ -128,7 +128,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      battlescenerinfobarbottom._0: 453971252087362281
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

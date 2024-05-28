@@ -53,7 +53,7 @@ public class mapGenerator : MonoBehaviour
         Dictionary<int, Tile> iden = new Dictionary<int, Tile>();
         for (int i = 0; i < tilePrefabs.Count; i++)
         {
-            iden.Add(i+1, tilePrefabs[i]);
+            iden.Add(tilePrefabs[i].number, tilePrefabs[i]);
         }
         
         return iden;
@@ -82,6 +82,9 @@ public class mapGenerator : MonoBehaviour
                 t = tilePrefabs[index - 1];
                 for(int i = 0; i < t.downNeighbors.Count();i++) // look thru that tiles down neighbors (cause those are the ones we can place)
                 {
+                    Tile x;
+                    if (!identifiers.TryGetValue(t.downNeighbors[i].number, out x)) throw new ArgumentException("Bad neighbor number");
+
                     up.Add(t.downNeighbors[i].number); // add its number to the up set
                 }
 
@@ -108,6 +111,8 @@ public class mapGenerator : MonoBehaviour
                 t = tilePrefabs[index - 1];
                 for (int i = 0; i < t.upNeighbors.Count(); i++) // look thru that tiles up neighbors (cause those are the ones we can place)
                 {
+                    Tile x;
+                    if (!identifiers.TryGetValue(t.upNeighbors[i].number, out x)) throw new ArgumentException("Bad neighbor number");
                     down.Add(t.upNeighbors[i].number); // add its number to the down set
                 }
 
@@ -133,6 +138,8 @@ public class mapGenerator : MonoBehaviour
                 t = tilePrefabs[index - 1];
                 for (int i = 0; i < t.rightNeighbors.Count(); i++) // look thru that tiles right neighbors (cause those are the ones we can place)
                 {
+                    Tile x;
+                    if (!identifiers.TryGetValue(t.rightNeighbors[i].number, out x)) throw new ArgumentException("Bad neighbor number");
                     left.Add(t.rightNeighbors[i].number); // add its number to the left set
                 }
 
@@ -158,6 +165,9 @@ public class mapGenerator : MonoBehaviour
                 t = tilePrefabs[index - 1];
                 for (int i = 0; i < t.leftNeighbors.Count(); i++) // look thru that tiles left neighbors (cause those are the ones we can place)
                 {
+                    Tile x;
+                    if (!identifiers.TryGetValue(t.leftNeighbors[i].number, out x)) throw new ArgumentException("Bad neighbor number");
+
                     right.Add(t.leftNeighbors[i].number); // add its number to the up set
                 }
 
@@ -184,12 +194,7 @@ public class mapGenerator : MonoBehaviour
         s.IntersectWith(right);
         s.IntersectWith(down);
 
-        // Map done
-        if (row == sizeY - 1 && col == sizeX - 1)
-        {
-            return true;
-        }
-
+        
         if (!s.Any())
         {
             return false;
@@ -200,6 +205,11 @@ public class mapGenerator : MonoBehaviour
         while(s.Count>0)
         {
             world[row, col] = select(s);
+            // Map done
+            if (row == sizeY - 1 && col == sizeX - 1)
+            {
+                return true;
+            }
 
             int nextRow = row;
             int nextCol = col + 1;
@@ -237,10 +247,9 @@ public class mapGenerator : MonoBehaviour
             for( int col = 0; col < sizeX; col++)
             {
                 identifiers.TryGetValue(world[row, col], out Tile t);
-                if(t!= null)
-                {
+                
                     Instantiate(t, new Vector3(row, col, 0) , Quaternion.identity);
-                }
+                
                 
             }
         } 
@@ -367,14 +376,19 @@ public class mapGenerator : MonoBehaviour
     public int select(HashSet<int> ps)
     {
         List<int> paw = new List<int>(ps);
-        int x = Random.Range(0, 41);
+        int x = 0;
+        foreach(int a in ps)
+        {
+            x += weightedTiles[a - 1];
+        }
         int w = 0;
+        x = Random.Range(0, x);
         for(int i = 0; i <paw.Count; i++)
         {
-            w += weightedTiles[paw[i]+1];
+            w += weightedTiles[paw[i]-1];
             if(w >= x)
             {
-                return i;
+                return paw[i];
             }
         }
         return - 1;
