@@ -20,11 +20,11 @@ public class princessController : MonoBehaviour
     private Vector2 input;
     Rigidbody2D rb;
     public GameObject button;
-
+    public int weaponCount;
     void Start()
     {
 
-       
+        weaponCount = 0;
         DontDestroyOnLoad(gameObject);
     }
     private void Awake()
@@ -68,11 +68,13 @@ public class princessController : MonoBehaviour
         }
         if (collision.gameObject.tag == "weapon")
         {
-
+            message.text = "You collected a weapon!";
+            Destroy(collision.gameObject);
+            weaponCount++;
         }
         if(collision.gameObject.tag == "knight")
         {
-            message.text = "You encountered a knight!";
+            message.text = "You encountered a knight! You may choose to either battle the knight to collect a key or to run away";
             messagePanel.SetActive(true);
             textBox.enabled = true;
             button.SetActive(true);

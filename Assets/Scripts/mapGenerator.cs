@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.WSA;
@@ -25,13 +26,7 @@ public class mapGenerator : MonoBehaviour
     public List<int> tiles1to35;
     public void Start()
     {
-        for(int i = 0; i < tilePrefabs.Count; i++)
-        {
-            up.Add(i + 1);
-            down.Add(i + 1);
-            left.Add(i + 1);
-            right.Add(i + 1);
-        }
+        
         for(int i = 1; i<=35; i++)
         {
             tiles1to35.Add(i);
@@ -60,7 +55,7 @@ public class mapGenerator : MonoBehaviour
         {
             iden.Add(i+1, tilePrefabs[i]);
         }
-        Debug.Log(iden.Count);
+        
         return iden;
     }
     public void makeGrid()
@@ -69,14 +64,17 @@ public class mapGenerator : MonoBehaviour
         
         Tile startTile = tilePrefabs[Random.Range(0, tilePrefabs.Count)];
         world[0,0] = startTile.number; // 
-       
+        
         generateTiles(world,0,0);
         
     }
     public void makeUpSet(int row, int col)
     {
-        if (row > 0)
+
+        up.Clear();
+        if (row > 0 && world[row - 1, col] !=0)
         {
+            
             int index = world[row - 1, col];// check the tile  above where we are
             Tile t = null;
             if (index > 0)
@@ -90,11 +88,19 @@ public class mapGenerator : MonoBehaviour
             }
 
         }
+        else
+        {
+         
+            up.UnionWith(tiles1to35);
+        }
     }
     public void makeDownSet(int row, int col)
     {
-        if (row < sizeY)
+
+        down.Clear();
+        if (row < sizeY -1 && world[row+1,col] !=0)
         {
+           
             int index = world[row + 1, col];// check the tile below where we are
             Tile t = null;
             if (index > 0)
@@ -108,11 +114,18 @@ public class mapGenerator : MonoBehaviour
             }
 
         }
+        else
+        {
+            
+            down.UnionWith(tiles1to35);
+        }
     }
     public void makeLeftSet(int row, int col)
     {
-        if (col > 0)
+        left.Clear();
+        if (col > 0 && world[row,col-1] != 0)
         {
+            
             int index = world[row, col-1];// check the tile to the left of where we are
             Tile t = null;
             if (index > 0)
@@ -126,11 +139,18 @@ public class mapGenerator : MonoBehaviour
             }
 
         }
+        else
+        {
+            
+            left.UnionWith(tiles1to35);
+        }
     }
     public void makeRightSet(int row, int col)
     {
-        if (col< sizeX)
+        right.Clear();
+        if (col< sizeX -1 && world[row, col + 1] !=0)
         {
+            
             int index = world[row, col+1];// check the tile to the right of where we are
             Tile t = null;
             if (index > 0)
@@ -144,6 +164,11 @@ public class mapGenerator : MonoBehaviour
             }
 
         }
+        else
+        {
+
+            right.UnionWith(tiles1to35);
+        }
     }
 
 
@@ -151,69 +176,78 @@ public class mapGenerator : MonoBehaviour
     {
         makeUpSet(row, col);
         makeDownSet(row, col);
-        makeLeftSet(row, col);  
+        makeLeftSet(row, col);
         makeRightSet(row, col);
-        HashSet<int> s = up;
-        HashSet<int> x = left;
-        s.IntersectWith(x);
-        x = right;
-        s.IntersectWith(x);
-        x = down;
-        s.IntersectWith(x);
 
-        Debug.Log("s" +s);
-        // map done
+        HashSet<int> s = new HashSet<int>(up);
+        s.IntersectWith(left);
+        s.IntersectWith(right);
+        s.IntersectWith(down);
+
+        // Map done
         if (row == sizeY - 1 && col == sizeX - 1)
         {
             return true;
         }
 
-     
-       
-        foreach (int tilePrefab in tiles1to35 )
+        if (!s.Any())
         {
-            if(s.Contains(tilePrefab))
+            return false;
+        }
+
+        
+
+        while(s.Count>0)
+        {
+            world[row, col] = select(s);
+
+            int nextRow = row;
+            int nextCol = col + 1;
+            if (nextCol >= sizeX)
             {
-
-                world[row, col] = tilePrefab;
-
-                int nextRow = row;
-                int nextCol = col + 1;
-
-                if (nextCol >= sizeX)
-                {
-                    nextCol = 0;
-                    nextRow++;
-                }
-
-                if (generateTiles(world, nextRow, nextCol))
-                {
-                    return true;
-                }
-                world[row, col] = 0;
+                nextCol = 0;
+                nextRow++;
             }
 
-                
-            
+            if (generateTiles(world, nextRow, nextCol))
+            {
+                return true;
+            }
+            s.Remove(world[row, col]);
+            // Backtrack
+            world[row, col] = 0;
+         
         }
+
         return false;
     }
- 
     void drawMap()
     {
-
+      
+        for (int i = 0; i<sizeX; i++)
+        {
+            Debug.Log("\n");
+            for(int j = 0; j<sizeY; j++)
+            {
+                Debug.Log(world[i, j] + " ");
+            }
+        }
         for(int row = 0; row < sizeY; row++)
         {
             for( int col = 0; col < sizeX; col++)
             {
                 identifiers.TryGetValue(world[row, col], out Tile t);
-                Instantiate(t, new Vector3(row, col, 0), Quaternion.identity);
+                if(t!= null)
+                {
+                    Instantiate(t, new Vector3(row, col, 0) , Quaternion.identity);
+                }
+                
             }
-        }
+        } 
       
     }
 
-        bool canBePlaced(int[,] world, int x, int y, int tileNum)
+      /*  bool canBePlaced(int[,] world, int x, int y, int tileNum)
         {
         Tile tile;
         if(!identifiers.TryGetValue(tileNum, out tile))
@@ -255,8 +289,8 @@ public class mapGenerator : MonoBehaviour
             }
         
 
-        }
-        bool canConnectToNeigh(int[,] world, int row, int col, Tile[] possibleNeighbors)
+        } */
+     /*   bool canConnectToNeigh(int[,] world, int row, int col, Tile[] possibleNeighbors)
         {
            if( possibleNeighbors == null || possibleNeighbors.Length == 0 )
             {
@@ -277,7 +311,7 @@ public class mapGenerator : MonoBehaviour
                 return false;
             }
             return true;
-        }
+        } */
 
         /*Tile[]getPossibleNeighbors(Tile [,] world, int row, int col, Vector2Int direction)
         {
@@ -330,17 +364,20 @@ public class mapGenerator : MonoBehaviour
         return weightedSelect;
            
         }
-    void shuffle(List<int> shuffle)
+    public int select(HashSet<int> ps)
     {
-        int x = shuffle.Count;
-        while(x>1)
+        List<int> paw = new List<int>(ps);
+        int x = Random.Range(0, 41);
+        int w = 0;
+        for(int i = 0; i <paw.Count; i++)
         {
-            x--;
-            int k = Random.Range(0, x + 1);
-            int temp = shuffle[k];
-            shuffle[k] = shuffle[x];
-            shuffle[x] = temp;
+            w += weightedTiles[paw[i]+1];
+            if(w >= x)
+            {
+                return i;
+            }
         }
+        return - 1;
        
     }
 
