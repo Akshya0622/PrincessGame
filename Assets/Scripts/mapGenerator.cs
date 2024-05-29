@@ -75,12 +75,12 @@ public class mapGenerator : MonoBehaviour
         if (row > 0 && world[row - 1, col] !=0)
         {
             
-            int index = world[row - 1, col];// check the tile  above where we are
+            int upTileNumber = world[row - 1, col];// check the tile  above where we are
             Tile t = null;
-            if (index > 0)
+            if (upTileNumber > 0)
             {
-                t = tilePrefabs[index - 1];
-                for(int i = 0; i < t.downNeighbors.Count();i++) // look thru that tiles down neighbors (cause those are the ones we can place)
+                identifiers.TryGetValue(upTileNumber, out t);
+                for (int i = 0; i < t.downNeighbors.Count();i++) // look thru that tiles down neighbors (cause those are the ones we can place)
                 {
                     Tile x;
                     if (!identifiers.TryGetValue(t.downNeighbors[i].number, out x)) throw new ArgumentException("Bad neighbor number");
@@ -104,11 +104,11 @@ public class mapGenerator : MonoBehaviour
         if (row < sizeY -1 && world[row+1,col] !=0)
         {
            
-            int index = world[row + 1, col];// check the tile below where we are
+            int downTileNumber = world[row + 1, col];// check the tile below where we are
             Tile t = null;
-            if (index > 0)
+            if (downTileNumber > 0)
             {
-                t = tilePrefabs[index - 1];
+                identifiers.TryGetValue(downTileNumber, out t);
                 for (int i = 0; i < t.upNeighbors.Count(); i++) // look thru that tiles up neighbors (cause those are the ones we can place)
                 {
                     Tile x;
@@ -131,11 +131,11 @@ public class mapGenerator : MonoBehaviour
         if (col > 0 && world[row,col-1] != 0)
         {
             
-            int index = world[row, col-1];// check the tile to the left of where we are
+            int leftTileNumber = world[row, col-1];// check the tile to the left of where we are
             Tile t = null;
-            if (index > 0)
+            if (leftTileNumber > 0)
             {
-                t = tilePrefabs[index - 1];
+                identifiers.TryGetValue(leftTileNumber, out t);
                 for (int i = 0; i < t.rightNeighbors.Count(); i++) // look thru that tiles right neighbors (cause those are the ones we can place)
                 {
                     Tile x;
@@ -158,11 +158,11 @@ public class mapGenerator : MonoBehaviour
         if (col< sizeX -1 && world[row, col + 1] !=0)
         {
             
-            int index = world[row, col+1];// check the tile to the right of where we are
+            int rightTileNumber = world[row, col+1];// check the tile to the right of where we are
             Tile t = null;
-            if (index > 0)
+            if (rightTileNumber > 0)
             {
-                t = tilePrefabs[index - 1];
+                identifiers.TryGetValue(rightTileNumber, out t);
                 for (int i = 0; i < t.leftNeighbors.Count(); i++) // look thru that tiles left neighbors (cause those are the ones we can place)
                 {
                     Tile x;
@@ -224,6 +224,7 @@ public class mapGenerator : MonoBehaviour
                 return true;
             }
             s.Remove(world[row, col]);
+           
             // Backtrack
             world[row, col] = 0;
          
@@ -388,7 +389,7 @@ public class mapGenerator : MonoBehaviour
             w += weightedTiles[paw[i]-1];
             if(w >= x)
             {
-                return paw[i];
+                return paw[i]-1;
             }
         }
         return - 1;
