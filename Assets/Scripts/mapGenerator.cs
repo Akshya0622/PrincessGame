@@ -82,8 +82,8 @@ public class mapGenerator : MonoBehaviour
                 identifiers.TryGetValue(upTileNumber, out t);
                 for (int i = 0; i < t.downNeighbors.Count();i++) // look thru that tiles down neighbors (cause those are the ones we can place)
                 {
-                    Tile x;
-                    if (!identifiers.TryGetValue(t.downNeighbors[i].number, out x)) throw new ArgumentException("Bad neighbor number");
+                    //Tile x;
+                    //if (!identifiers.TryGetValue(t.downNeighbors[i].number, out x)) throw new ArgumentException("Bad neighbor number");
 
                     up.Add(t.downNeighbors[i].number); // add its number to the up set
                 }
@@ -205,6 +205,7 @@ public class mapGenerator : MonoBehaviour
         while(s.Count>0)
         {
             world[row, col] = select(s);
+            Debug.Log(world[row, col] + " : (" + row + ", " + col + ") : " + String.Join(", ", s));
             // Map done
             if (row == sizeY - 1 && col == sizeX - 1)
             {
@@ -249,7 +250,7 @@ public class mapGenerator : MonoBehaviour
             {
                 identifiers.TryGetValue(world[row, col], out Tile t);
                 
-                    Instantiate(t, new Vector3(row, col, 0) , Quaternion.identity);
+                    Instantiate(t, new Vector3(col, sizeY - row, 0) , Quaternion.identity);
                 
                 
             }
@@ -384,12 +385,12 @@ public class mapGenerator : MonoBehaviour
         }
         int w = 0;
         x = Random.Range(0, x);
-        for(int i = 0; i <paw.Count; i++)
+        for(int i = 0; i < paw.Count; i++)
         {
             w += weightedTiles[paw[i]-1];
             if(w >= x)
             {
-                return paw[i]-1;
+                return paw[i];
             }
         }
         return - 1;
