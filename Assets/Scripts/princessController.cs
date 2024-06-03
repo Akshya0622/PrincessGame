@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using Cinemachine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class princessController : MonoBehaviour
 {
@@ -19,8 +20,12 @@ public class princessController : MonoBehaviour
     public bool isMoving;
     private Vector2 input;
     Rigidbody2D rb;
-    public GameObject button;
+    public GameObject battleButton;
+    public GameObject runAwayButton;
     public int weaponCount;
+    public int knightRank;
+    public knightController knight;
+    public knightController lastCollided = null;
     void Start()
     {
 
@@ -74,12 +79,23 @@ public class princessController : MonoBehaviour
         }
         if(collision.gameObject.tag == "knight")
         {
+            knight = collision.gameObject.GetComponent<knightController>();
+            lastCollided = knight;
+            Debug.Log(lastCollided != null ? "not null" : "null");
+            knightRank = knight.knightRank;
             message.text = "You encountered a knight! You may choose to either battle the knight to collect a key or to run away";
             messagePanel.SetActive(true);
             textBox.enabled = true;
-            button.SetActive(true);
+            battleButton.SetActive(true);
+            runAwayButton.SetActive(true);
+
+
         }
+        
+
     }
+
+    
 }
 
 

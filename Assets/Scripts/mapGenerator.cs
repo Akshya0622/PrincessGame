@@ -235,7 +235,8 @@ public class mapGenerator : MonoBehaviour
     }
     void drawMap()
     {
-      
+        Vector3 centerize = new Vector3(-40,-30, 0);
+
         for (int i = 0; i<sizeX; i++)
         {
             Debug.Log("\n");
@@ -250,7 +251,7 @@ public class mapGenerator : MonoBehaviour
             {
                 identifiers.TryGetValue(world[row, col], out Tile t);
                 
-                    Instantiate(t, new Vector3(col, sizeY - row, 0) , Quaternion.identity);
+                    Instantiate(t, new Vector3(col, sizeY - row, 0) + centerize , Quaternion.identity);
                 
                 
             }
