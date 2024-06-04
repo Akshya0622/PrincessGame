@@ -25,14 +25,23 @@ public class battle : MonoBehaviour
     public Image health1;
     public Image health2;
     public Image health3;
+    public int weapons;
+    public knightController lastknight;
+    public int lastKnightRank;
     void Start()
     {
         pc = FindObjectOfType<princessController>();
+        pc.weaponCount = weapons;
+        pc.lastCollided = lastknight;
+        lastknight.knightRank = lastKnightRank;
+
+         
     }
+    
 
     public void Attack()
     {
-        if (attackCount == pc.weaponCount)
+        if(weapons == 0 && lastKnightRank > 0) 
         {
             StartCoroutine(showMessage("You lost. Find more weapons and try again :(", msgDispTime));
             health--;
@@ -46,11 +55,18 @@ public class battle : MonoBehaviour
             }
 
         }
+        if(attackCount == lastKnightRank)
+        {
+            StartCoroutine(knightDed("You defeated the knight and earned a key! You are now one step closer to saving the prince."));
+        }
         else
         {
+
             int index = Random.Range(0, possibleAttacks.Length);
             StartCoroutine(showBattlemsg(possibleAttacks[index], msgDispTime));
             attackCount++;
+            weapons--;
+
           
           
 
@@ -72,7 +88,7 @@ public class battle : MonoBehaviour
         yield return new WaitForSeconds(delay);
         int index2 = Random.Range(0, possibleKnightAttacks.Length);
         msg.text = possibleKnightAttacks[index2];
-        StartCoroutine(flash(knightImage));
+        StartCoroutine(flash(princessImage));
         yield return new WaitForSeconds(delay);
       
     }
@@ -81,6 +97,10 @@ public class battle : MonoBehaviour
         character.SetActive(false);
         yield return new WaitForSeconds(.5f);
         character.SetActive(true);
+    }
+    private IEnumerator knightDed(string message)
+    {
+
     }
   
 }

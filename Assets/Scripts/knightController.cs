@@ -14,6 +14,7 @@ public class knightController : MonoBehaviour
     private Animator animator;
     public bool canMove = true;
     public int knightRank;
+    public mapGenerator map;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -27,7 +28,10 @@ public class knightController : MonoBehaviour
         {
             walkingUp = true;
         }
-        
+        int randRow = Random.Range(0, map.sizeY);
+        int randCol = Random.Range(0, map.sizeX);
+        rb.position = new Vector3(randCol, map.sizeY - randRow, 0) + map.centerize;
+
     }
 
     void Update()

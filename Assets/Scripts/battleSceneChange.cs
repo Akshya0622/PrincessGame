@@ -15,6 +15,9 @@ public class battleSceneChange : MonoBehaviour
     public TMP_Text message;
     public GameObject menu;
     public princessController p;
+    public Image key1;
+    public Image key2;
+    public Image key3;
 
     public void ChangeScene()
     {
@@ -35,6 +38,21 @@ public class battleSceneChange : MonoBehaviour
     public void loadGame()
     {
         menu.SetActive(false);
+    }
+    public void Update()
+    {
+        if(p.keyCount == 1)
+        {
+            key1.enabled = true;
+        }
+        if (p.keyCount == 2)
+        {
+            key2.enabled = true;
+        }
+        if (p.keyCount == 3)
+        {
+            key3.enabled = true;
+        }
     }
 
 }
