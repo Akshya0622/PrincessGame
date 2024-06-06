@@ -28,21 +28,29 @@ public class battle : MonoBehaviour
     public int weapons;
     public knightController lastknight;
     public int lastKnightRank;
+    public int keyCount = 0;
     void Start()
     {
         pc = FindObjectOfType<princessController>();
-        pc.weaponCount = weapons;
-        pc.lastCollided = lastknight;
-        lastknight.knightRank = lastKnightRank;
+        
 
          
+    }
+
+    public void StartBattle()
+    {
+        weapons = pc.weaponCount;
+        lastknight = pc.lastCollided;
+        lastKnightRank = lastknight.knightRank;
     }
     
 
     public void Attack()
     {
+        
         if(weapons == 0 && lastKnightRank > 0) 
         {
+            Debug.Log("last knight rank " + lastKnightRank);
             StartCoroutine(showMessage("You lost. Find more weapons and try again :(", msgDispTime));
             health--;
             if(health == 2)
@@ -55,13 +63,15 @@ public class battle : MonoBehaviour
             }
 
         }
-        if(attackCount == lastKnightRank)
+        else if(attackCount == lastKnightRank)
         {
+            Debug.Log("last knight rank " + lastKnightRank);
             StartCoroutine(knightDed("You defeated the knight and earned a key! You are now one step closer to saving the prince."));
+            keyCount++;
         }
         else
         {
-
+            Debug.Log("last knight rank " + lastKnightRank);
             int index = Random.Range(0, possibleAttacks.Length);
             StartCoroutine(showBattlemsg(possibleAttacks[index], msgDispTime));
             attackCount++;
@@ -100,7 +110,17 @@ public class battle : MonoBehaviour
     }
     private IEnumerator knightDed(string message)
     {
-
+       
+        knightImage.SetActive(false);
+        yield return new WaitForSeconds(.5f);
+        knightImage.SetActive(true);
+        yield return new WaitForSeconds(.3f);
+        knightImage.SetActive(false);
+        msg.text = message;
+        yield return new WaitForSeconds(2.0f);
+        battleCam.enabled = false;
+        mainCam.enabled = true;
+        msg.text = " ";
     }
   
 }

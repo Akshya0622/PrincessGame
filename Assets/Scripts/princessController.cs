@@ -26,10 +26,12 @@ public class princessController : MonoBehaviour
     public int knightRank;
     public knightController knight;
     public knightController lastCollided = null;
+    public int keyCount;
     void Start()
     {
 
         weaponCount = 0;
+        keyCount = 0;
         DontDestroyOnLoad(gameObject);
     }
     private void Awake()
@@ -73,8 +75,9 @@ public class princessController : MonoBehaviour
         }
         if (collision.gameObject.tag == "weapon")
         {
-            message.text = "You collected a weapon!";
+           
             Destroy(collision.gameObject);
+            StartCoroutine(showMessage("You collected a weapon!", 2));
             weaponCount++;
         }
         if(collision.gameObject.tag == "knight")
@@ -94,8 +97,14 @@ public class princessController : MonoBehaviour
         
 
     }
+    private IEnumerator showMessage(string msg, float delay)
+    {
+        message.text = msg;
+        yield return new WaitForSeconds(delay);
+        message.text = " ";
+    }
 
-    
+
 }
 
 

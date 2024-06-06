@@ -18,18 +18,21 @@ public class battleSceneChange : MonoBehaviour
     public Image key1;
     public Image key2;
     public Image key3;
+    public battle battle;
+    public GameObject dungeon;
 
     public void ChangeScene()
     {
+        battle.StartBattle();
         battleCam.enabled = true;
         mainCamera.enabled = false;
         purpleBox.SetActive(false);
-        
+
     }
     public void runAway()
     {
         p.lastCollided.canMove = true;
-        
+
         message.text = " ";
         runButton.SetActive(false);
         battleButton.SetActive(false);
@@ -41,18 +44,20 @@ public class battleSceneChange : MonoBehaviour
     }
     public void Update()
     {
-        if(p.keyCount == 1)
+        if (battle.keyCount == 1)
         {
             key1.enabled = true;
         }
-        if (p.keyCount == 2)
+        if (battle.keyCount == 2)
         {
             key2.enabled = true;
         }
-        if (p.keyCount == 3)
+        if (battle.keyCount == 3)
         {
             key3.enabled = true;
+            message.text = "You collected all three keys! Now you can unlock the dungeon, battle the dragon, and save your prince!";
+            dungeon.SetActive(true);
         }
-    }
 
+    }
 }

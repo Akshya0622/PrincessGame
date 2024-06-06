@@ -24,7 +24,7 @@ public class mapGenerator : MonoBehaviour
     HashSet<int> left = new HashSet<int>();
     HashSet<int> right = new HashSet<int>();
     public List<int> tiles1to35;
-    public GameObject weapon;
+    public GameObject[] weapons; 
    public Vector3 centerize = new Vector3(-40, -30, 0);
     public void Start()
     {
@@ -262,7 +262,8 @@ public class mapGenerator : MonoBehaviour
         {
             int randRow = Random.Range(0, sizeY);
             int randCol = Random.Range(0, sizeX);
-            Instantiate(weapon, new Vector3(randCol, sizeY - randRow, 0) + centerize , Quaternion.identity);
+            int randIndex = Random.Range(0, weapons.Length);
+            Instantiate(weapons[randIndex], new Vector3(randCol, sizeY - randRow, 0) + centerize , Quaternion.identity);
         }
       
     }
