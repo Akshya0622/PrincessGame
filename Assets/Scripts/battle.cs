@@ -121,6 +121,7 @@ public class battle : MonoBehaviour
         battleCam.enabled = false;
         mainCam.enabled = true;
         msg.text = " ";
+        lastknight.gameObject.SetActive(false);
     }
   
 }
